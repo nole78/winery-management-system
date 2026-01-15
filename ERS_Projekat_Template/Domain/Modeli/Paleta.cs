@@ -14,7 +14,7 @@ namespace Domain.Modeli
 
         public Paleta() { }
 
-        public Paleta(long sifraPalete, string adrOdredista, long iDPodruma, List<long> iDVina, StatusPalete status)
+        public Paleta(long sifraPalete, string adrOdredista, long iDPodruma, List<string> iDVina, StatusPalete status)
         {
             SifraPalete = Guid.NewGuid().ToString();
             AdrOdredista = adrOdredista;
