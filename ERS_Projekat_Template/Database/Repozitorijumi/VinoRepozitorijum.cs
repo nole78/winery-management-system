@@ -1,7 +1,7 @@
 ﻿using Domain.BazaPodataka;
 using Domain.Modeli;
 using Domain.Repozitorijumi;
-
+using Domain.Enumeracije;
 namespace Database.Repozitorijumi
 {
     public class VinoRepozitorijum : IVinoRepozitorijum
@@ -61,7 +61,7 @@ namespace Database.Repozitorijumi
                 List<Vino> ret_val = [];
                 foreach(var v in bazaPodataka.Tabele.Vina)
                 {
-                    if(v.TipVina == tip)
+                    if(v.Tip == tip)
                     {
                         ret_val.Add(v);
                     }
