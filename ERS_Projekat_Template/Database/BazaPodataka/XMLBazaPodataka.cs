@@ -7,16 +7,12 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace Database
+namespace Database.BazaPodataka
 {
     public class XMLBazaPodataka : IBazaPodataka
     {
         // Putanja do XML fajla baze podataka
-        //  private readonly string _putanja = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "BazaPodataka.xml");
-        //   string projectFolder _putanja= Path.Combine(
-        //  Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.Parent.Parent.FullName,
-
-        private readonly string _putanja = Path.Combine("..", "Database", "BazaPodataka.xml");
+        private readonly string _putanja = Path.Combine("..", "BazaPodataka.xml");
   
 
         public TabeleBazaPodataka Tabele { get; set; }
