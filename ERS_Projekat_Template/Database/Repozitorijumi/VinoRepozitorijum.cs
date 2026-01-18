@@ -2,6 +2,7 @@
 using Domain.Modeli;
 using Domain.Repozitorijumi;
 using Domain.Enumeracije;
+
 namespace Database.Repozitorijumi
 {
     public class VinoRepozitorijum : IVinoRepozitorijum
@@ -92,6 +93,18 @@ namespace Database.Repozitorijumi
             catch
             {
                 return false;
+            }
+        }
+
+        public IEnumerable<Vino> PregledSvihVina()
+        {
+            try
+            {
+                return bazaPodataka.Tabele.Vina;
+            }
+            catch
+            {
+                return [];
             }
         }
     }
