@@ -8,6 +8,7 @@ using Domain.Servisi;
 using Presentation.Authentifikacija;
 using Presentation.Meni;
 using Services.AutenftikacioniServisi;
+using Services.LoggerServisi;
 
 namespace Loger_Bloger
 {
@@ -21,10 +22,14 @@ namespace Loger_Bloger
             // Repozitorijumi
             IKorisniciRepozitorijum korisniciRepozitorijum = new KorisniciRepozitorijum(bazaPodataka);
             IPodrumRepozitorijum podrumRepozitorijum = new PodrumRepozitorijum(bazaPodataka);
+            ILozaRepozitorijum lozaRepozitorijum = new LozaRepozitorijum(bazaPodataka);
+            IVinoRepozitorijum vinoRepozitorijum = new VinoRepozitorijum(bazaPodataka);
 
             // Servisi
             IAutentifikacijaServis autentifikacijaServis = new AutentifikacioniServis(); // TODO: Pass necessary dependencies
             // TODO: Add other necessary services
+            string putanja = "log.txt";
+            ILoggerServis loggerServis = new LoggerServis(putanja);
 
             // Ako nema nijednog korisnika u sistemu, dodati dva nova
             if (korisniciRepozitorijum.SviKorisnici().Count() == 0)
