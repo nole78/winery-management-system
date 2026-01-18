@@ -21,6 +21,7 @@ namespace Loger_Bloger
 
             // Repozitorijumi
             IKorisniciRepozitorijum korisniciRepozitorijum = new KorisniciRepozitorijum(bazaPodataka);
+            IPodrumRepozitorijum podrumRepozitorijum = new PodrumRepozitorijum(bazaPodataka);
             ILozaRepozitorijum lozaRepozitorijum = new LozaRepozitorijum(bazaPodataka);
             IVinoRepozitorijum vinoRepozitorijum = new VinoRepozitorijum(bazaPodataka);
 

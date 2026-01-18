@@ -12,10 +12,9 @@ namespace Domain.Modeli
         public string Naziv { get; set; } = string.Empty;
         public int Temperatura { get; set; } = 0;
         public int MaxPaleta { get; set; } = 0;
-        public VinskiPodrum() { Id = Guid.NewGuid().ToString(); }
+        public VinskiPodrum() {}
         public VinskiPodrum(string naziv, int temperatura, int maxPaleta)
         {
-            Id = Guid.NewGuid().ToString();
             Naziv = naziv;
             Temperatura = temperatura;
             MaxPaleta = maxPaleta;
