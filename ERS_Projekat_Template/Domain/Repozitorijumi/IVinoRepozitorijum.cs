@@ -8,6 +8,7 @@ namespace Domain.Repozitorijumi
         public Vino DodajVino(Vino vino);
         public Vino PronadjiVinoPoID(string id);
         public IEnumerable<Vino> PronadjiVinoPoTipu(TipVina tip);
+        public IEnumerable<Vino> PregledSvihVina();
         public bool AzurirajVino(Vino vino);
     }
 }
