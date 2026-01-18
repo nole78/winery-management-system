@@ -20,6 +20,7 @@ namespace Loger_Bloger
 
             // Repozitorijumi
             IKorisniciRepozitorijum korisniciRepozitorijum = new KorisniciRepozitorijum(bazaPodataka);
+            IPodrumRepozitorijum podrumRepozitorijum = new PodrumRepozitorijum(bazaPodataka);
 
             // Servisi
             IAutentifikacijaServis autentifikacijaServis = new AutentifikacioniServis(); // TODO: Pass necessary dependencies

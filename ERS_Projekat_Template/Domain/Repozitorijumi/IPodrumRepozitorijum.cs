@@ -11,7 +11,7 @@ namespace Domain.Repozitorijumi
     public interface IPodrumRepozitorijum
     {
         public VinskiPodrum DodajPodrum(VinskiPodrum podrum);
-        public VinskiPodrum PronadjiVinoPoID(string id);
+        public VinskiPodrum PronadjiPodrumPoID(string id);
         public IEnumerable<VinskiPodrum> PregledSvihPodruma();
         public bool AzurirajPodrum(VinskiPodrum podrum);
     }
