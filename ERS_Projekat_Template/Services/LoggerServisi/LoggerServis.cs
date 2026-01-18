@@ -1,4 +1,5 @@
 ﻿using Domain.Enumeracije;
+using Domain.Servisi;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Services.LoggerServisi
 {
-    public class LoggerServis
+    public class LoggerServis : ILoggerServis
     {
         private string putanja;
 
