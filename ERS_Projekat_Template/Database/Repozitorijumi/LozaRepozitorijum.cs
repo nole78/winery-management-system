@@ -21,6 +21,7 @@ namespace Database.Repozitorijumi
 
                 if (postoji.Id == string.Empty)
                 {
+                    loza.Id = Guid.NewGuid().ToString();
                     BazaPodataka.Tabele.VinoveLoze.Add(loza);
                     BazaPodataka.SacuvajPromene();
 

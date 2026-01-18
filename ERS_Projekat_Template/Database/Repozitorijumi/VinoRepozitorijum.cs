@@ -38,6 +38,8 @@ namespace Database.Repozitorijumi
         {
             try
             {
+                vino.ID_VINA = Guid.NewGuid().ToString();
+                vino.SifraSerije = "VN-2025-" + vino.ID_VINA;
                 bazaPodataka.Tabele.Vina.Add(vino);
                 bool uspesno = bazaPodataka.SacuvajPromene();
                 if (uspesno)

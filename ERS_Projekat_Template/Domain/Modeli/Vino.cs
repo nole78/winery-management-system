@@ -12,29 +12,24 @@ namespace Domain.Modeli
     {
         public string Naziv { get; set; } = string.Empty;
 
-        public string ID_VINA { get; set; }
-        public TipVina Tip { get; set; }  
+        public string ID_VINA { get; set; } = string.Empty;
+        public TipVina Tip { get; set; }  = TipVina.STOLNO;
         public double Zapremina { get; set; } = 0; // u litrima
 
 
       
-        public string SifraSerije { get; set; }
+        public string SifraSerije { get; set; } = string.Empty;
 
         public string IdLoze { get; set; } = string.Empty;
         public DateTime DatumFlasiranja { get; set; } = DateTime.Now;
 
-        public Vino() {
-            ID_VINA = Guid.NewGuid().ToString();
-            SifraSerije = "VN-2025-" + ID_VINA;
-        }
+        public Vino() {}
 
         public Vino(string naziv, TipVina t, double zapremina, string idloze, DateTime df)
         {
             Naziv = naziv;
             Tip = t;
             Zapremina = zapremina;
-            ID_VINA = Guid.NewGuid().ToString();
-            SifraSerije = "VN-2025-" + ID_VINA;
             IdLoze = idloze;
             DatumFlasiranja = df;
         }

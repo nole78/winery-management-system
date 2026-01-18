@@ -12,6 +12,7 @@ namespace Domain.Modeli
         public string Naziv { get; set; } = string.Empty;
         public int Temperatura { get; set; } = 0;
         public int MaxPaleta { get; set; } = 0;
+        public List<string> IDPalete { get; set; } = new List<string>();
         public VinskiPodrum() {}
         public VinskiPodrum(string naziv, int temperatura, int maxPaleta)
         {

@@ -18,6 +18,7 @@ namespace Database.Repozitorijumi
         {
             try
             {
+                paleta.SifraPalete = Guid.NewGuid().ToString();
                 bazaPodataka.Tabele.Palete.Add(paleta);
                 bool uspesno = bazaPodataka.SacuvajPromene();
                 if (uspesno)

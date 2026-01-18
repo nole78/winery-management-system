@@ -9,16 +9,12 @@ namespace Domain.Modeli
         public float NivoSecera { get; set; } = 0;
         public int GodSadnje { get; set; } = 0;
         public string RegionUzgoja { get; set; } = string.Empty;
-        public FazaZrelosti Zrelost { get; set; }
+        public FazaZrelosti Zrelost { get; set; } = FazaZrelosti.POSADJENA;
 
-        public VinovaLoza()
-        {
-            Id= Guid.NewGuid().ToString();
-        }
+        public VinovaLoza(){}
 
         public VinovaLoza(string naziv, float nivoSecera, int godSadnje, string regionUzgoja, FazaZrelosti zrelost)
         {
-            Id= Guid.NewGuid().ToString();
             Naziv=naziv;
             NivoSecera=nivoSecera;
             GodSadnje=godSadnje;
