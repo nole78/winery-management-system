@@ -90,8 +90,40 @@ namespace Database.BazaPodataka
                 }).ToList() ?? new List<Vino>();
 
 
-            // tabele.Palete = new List<Paleta>();   // za kasnije kad dodje repozitorijum
-            //   tabele.Podrumi = new List<Podrum>();  // za kasnije kad dodje repozitorijum
+           
+            tabele.Palete = doc.Root.Element("Palete")?
+             .Elements("Paleta")
+             .Select(p => new Paleta
+            {
+               SifraPalete = p.Element("SifraPalete")?.Value ?? string.Empty,
+               AdrOdredista = p.Element("AdrOdredista")?.Value ?? string.Empty,
+               IDPodruma = long.TryParse(p.Element("IDPodruma")?.Value, out var idp) ? idp : 0,
+               Status = Enum.TryParse<StatusPalete>(
+                 p.Element("Status")?.Value,
+                 out var status)
+             ? status
+             : StatusPalete.UPAKOVANA,
+               IDVina = p.Element("Vina")?
+              .Elements("IDVina")
+              .Select(x => x.Value)
+              .ToList() ?? new List<string>()
+        }).ToList() ?? new List<Paleta>();
+
+       
+
+            tabele.Podrumi = doc.Root.Element("Podrumi")?
+           .Elements("Podrum")
+           .Select(p => new VinskiPodrum
+         {
+            Id = p.Element("Id")?.Value ?? string.Empty,
+            Naziv = p.Element("Naziv")?.Value ?? string.Empty,
+            Temperatura = int.TryParse(p.Element("Temperatura")?.Value, out var t) ? t : 0,
+            MaxPaleta = int.TryParse(p.Element("MaxPaleta")?.Value, out var m) ? m : 0,
+            IDPalete = p.Element("Palete")?
+            .Elements("IDPalete")
+            .Select(x => x.Value)
+            .ToList() ?? new List<string>()
+           }).ToList() ?? new List<VinskiPodrum>();
 
             return tabele;
         }
@@ -133,8 +165,32 @@ namespace Database.BazaPodataka
                             )
                         )
                     ),
-                    new XElement("Palete"),
-                    new XElement("Podrumi")
+                    new XElement("Palete",
+                       tabele.Palete.Select(p =>
+                       new XElement("Paleta",
+                       new XElement("SifraPalete", p.SifraPalete),
+                       new XElement("AdrOdredista", p.AdrOdredista),
+                       new XElement("IDPodruma", p.IDPodruma),
+                       new XElement("Status", p.Status),
+                       new XElement("Vina",
+                       p.IDVina.Select(id => new XElement("IDVina", id))
+                         )
+                       )
+                     )
+                  ),
+                    new XElement("Podrumi",
+                    tabele.Podrumi.Select(p =>
+                        new XElement("Podrum",
+                        new XElement("Id", p.Id),
+                        new XElement("Naziv", p.Naziv),
+                        new XElement("Temperatura", p.Temperatura),
+                        new XElement("MaxPaleta", p.MaxPaleta),
+                        new XElement("Palete",
+                  p.IDPalete.Select(id => new XElement("IDPalete", id))
+            )
+        )
+    )
+)
                 )
             );
 
