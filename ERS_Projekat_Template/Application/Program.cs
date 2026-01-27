@@ -9,6 +9,7 @@ using Presentation.Authentifikacija;
 using Presentation.Meni;
 using Services.AutenftikacioniServisi;
 using Services.LoggerServisi;
+using Services.VinogradarstvoServis;
 
 namespace Loger_Bloger
 {
@@ -37,6 +38,8 @@ namespace Loger_Bloger
                 // TODO: Add initial users to the system
                 korisniciRepozitorijum.DodajKorisnika(new Korisnik("enolog", "enolog123", "Marko Markovic", TipKorisnika.GLAVNI_ENOLOG));
             }
+
+            IVinogradarstvoServis vinogradarstvoServis = new VinogradarstvoServis(lozaRepozitorijum, loggerServis);
 
             // Prezentacioni sloj
             AutentifikacioniMeni am = new AutentifikacioniMeni(autentifikacijaServis);

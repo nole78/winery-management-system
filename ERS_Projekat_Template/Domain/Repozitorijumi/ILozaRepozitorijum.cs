@@ -1,4 +1,5 @@
-﻿using Domain.Modeli;
+﻿using Domain.Enumeracije;
+using Domain.Modeli;
 
 namespace Domain.Repozitorijumi
 {
@@ -8,6 +9,7 @@ namespace Domain.Repozitorijumi
         public bool AzurirajLozu(VinovaLoza loza);
         public VinovaLoza PronadjiLozuPoID(string id);
         public IEnumerable<VinovaLoza> PregledLozaPoSeceru(float nivoSecera);
+        public IEnumerable<VinovaLoza> PregledLozaPoNazivu(string naziv);
         public IEnumerable<VinovaLoza> PregledSvihLoza();
 
     }
