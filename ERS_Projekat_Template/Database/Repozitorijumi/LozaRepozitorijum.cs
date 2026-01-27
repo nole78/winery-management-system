@@ -1,4 +1,6 @@
 ﻿using Domain.BazaPodataka;
+using Domain.Enumeracije;
+using Domain.Konstante.NivoSeceraLoze;
 using Domain.Modeli;
 using Domain.Repozitorijumi;
 
@@ -76,6 +78,22 @@ namespace Database.Repozitorijumi
                 foreach (VinovaLoza vl in BazaPodataka.Tabele.VinoveLoze)
                 {
                     if (vl.NivoSecera == nivoSecera) lista.Add(vl);
+                }
+
+                return lista;
+            }
+            catch { return lista; }
+        }
+
+        public IEnumerable<VinovaLoza> PregledLozaPoNazivu(string naziv)
+        {
+            List<VinovaLoza> lista = new List<VinovaLoza>();
+
+            try
+            {
+                foreach (VinovaLoza vl in BazaPodataka.Tabele.VinoveLoze)
+                {
+                    if (vl.Naziv == naziv) lista.Add(vl);
                 }
 
                 return lista;
