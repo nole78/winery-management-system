@@ -10,6 +10,7 @@ using Presentation.Meni;
 using Services.AutenftikacioniServisi;
 using Services.LoggerServisi;
 using Services.VinogradarstvoServis;
+using Services.ServisiZaProizvodnjuVina;
 
 namespace Loger_Bloger
 {
@@ -40,7 +41,7 @@ namespace Loger_Bloger
             }
 
             IVinogradarstvoServis vinogradarstvoServis = new VinogradarstvoServis(lozaRepozitorijum, loggerServis);
-
+            IServisZaProizvodnjuVina servisZaProizvodnjuVina = new ServisZaProizvodnjuVina(vinogradarstvoServis, loggerServis);
             // Prezentacioni sloj
             AutentifikacioniMeni am = new AutentifikacioniMeni(autentifikacijaServis);
             Korisnik prijavljen = new Korisnik();
