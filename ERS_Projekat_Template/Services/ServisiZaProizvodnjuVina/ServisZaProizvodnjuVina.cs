@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Services.ServisiZaProizvodnjuVina
 {
 
@@ -17,19 +18,29 @@ namespace Services.ServisiZaProizvodnjuVina
 
 
         private readonly IVinogradarstvoServis vinogradarstvoServis;
+        ILoggerServis loger;
 
-        public ServisZaProizvodnjuVina(IVinogradarstvoServis vinogradarstvoServis)
+        public ServisZaProizvodnjuVina(IVinogradarstvoServis vinogradarstvoServis, ILoggerServis loger)
         {
             this.vinogradarstvoServis = vinogradarstvoServis;
+            this.loger = loger;
         }
 
         public List<Vino> PokreniFermentaciju(TipVina tipVina, int brojFlasa, double zapreminaFlase)
         {
             if (brojFlasa <= 0)
+            {
+                loger.EvidentirajDogadjaj(TipEvidencije.ERROR, "Broj flaša mora biti veći od nule.");
                 throw new ArgumentException(nameof(brojFlasa));
 
+            }
+
             if (zapreminaFlase != 0.75 && zapreminaFlase != 1.5)
+            {
+                loger.EvidentirajDogadjaj(TipEvidencije.ERROR, "Zapremina flaše mora biti 0.75 ili 1.5 litara.");
                 throw new ArgumentException(nameof(zapreminaFlase));
+
+            }
 
            
 
@@ -43,6 +54,7 @@ namespace Services.ServisiZaProizvodnjuVina
                     Zapremina = zapreminaFlase,
                     DatumFlasiranja = DateTime.Now
                 });
+                loger.EvidentirajDogadjaj(TipEvidencije.INFO, $"Proizvedeno vino tipa {tipVina} sa zapreminom {zapreminaFlase}L.");
             }
 
             return vina;
@@ -57,20 +69,31 @@ namespace Services.ServisiZaProizvodnjuVina
         public List<Vino> DobaviVina(TipVina tipVina, int brojFlasa, double zapreminaFlase, string nazivLoze)
         {
             if (brojFlasa <= 0)
+            {
+                loger.EvidentirajDogadjaj(TipEvidencije.ERROR, "Broj flaša mora biti veći od nule.");
                 throw new ArgumentException(nameof(brojFlasa));
 
+            }
+
             if (zapreminaFlase != 0.75 && zapreminaFlase != 1.5)
+            {
+                loger.EvidentirajDogadjaj(TipEvidencije.ERROR, "Zapremina flaše mora biti 0.75 ili 1.5 litara.");
                 throw new ArgumentException(nameof(zapreminaFlase));
 
-           
+            }
+
+
+
             int potrebnoLoza = IzracunajPotrebnuKolicinuLoza(brojFlasa, zapreminaFlase);
 
         
             var obraneLoze = vinogradarstvoServis.OberiLoze(nazivLoze, potrebnoLoza).ToList();
 
             if (obraneLoze.Count < potrebnoLoza)
+            {
+                loger.EvidentirajDogadjaj(TipEvidencije.ERROR, "Nema dovoljno loza za proizvodnju vina.");
                 throw new InvalidOperationException("Nema dovoljno loza za proizvodnju vina.");
-
+            }
             
             return PokreniFermentaciju(tipVina, brojFlasa, zapreminaFlase);
         }
