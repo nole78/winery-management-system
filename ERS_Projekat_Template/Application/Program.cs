@@ -11,6 +11,7 @@ using Services.AutenftikacioniServisi;
 using Services.LoggerServisi;
 using Services.VinogradarstvoServis;
 using Services.ServisiZaProizvodnjuVina;
+using Services.PakovanjeServisi;
 
 namespace Loger_Bloger
 {
@@ -26,6 +27,7 @@ namespace Loger_Bloger
             IPodrumRepozitorijum podrumRepozitorijum = new PodrumRepozitorijum(bazaPodataka);
             ILozaRepozitorijum lozaRepozitorijum = new LozaRepozitorijum(bazaPodataka);
             IVinoRepozitorijum vinoRepozitorijum = new VinoRepozitorijum(bazaPodataka);
+            IPaletaRepozitorijum paletaRepozitorijum = new PaletaRepozitorijum(bazaPodataka);
 
             // Servisi
             IAutentifikacijaServis autentifikacijaServis = new AutentifikacioniServis(); // TODO: Pass necessary dependencies
@@ -42,6 +44,7 @@ namespace Loger_Bloger
 
             IVinogradarstvoServis vinogradarstvoServis = new VinogradarstvoServis(lozaRepozitorijum, loggerServis);
             IServisZaProizvodnjuVina servisZaProizvodnjuVina = new ServisZaProizvodnjuVina(vinogradarstvoServis, loggerServis);
+            IPakovanjeServis pakovanjeServis = new PakovanjeServis(paletaRepozitorijum, loggerServis, servisZaProizvodnjuVina);
             // Prezentacioni sloj
             AutentifikacioniMeni am = new AutentifikacioniMeni(autentifikacijaServis);
             Korisnik prijavljen = new Korisnik();

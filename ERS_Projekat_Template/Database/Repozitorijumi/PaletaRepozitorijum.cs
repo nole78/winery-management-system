@@ -5,7 +5,7 @@ using Domain.Enumeracije;
 
 namespace Database.Repozitorijumi
 {
-    public class PaletaRepozitorijum
+    public class PaletaRepozitorijum : IPaletaRepozitorijum
     {
         IBazaPodataka bazaPodataka;
 
