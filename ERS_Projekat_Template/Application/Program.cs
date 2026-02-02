@@ -30,21 +30,20 @@ namespace Loger_Bloger
             IPaletaRepozitorijum paletaRepozitorijum = new PaletaRepozitorijum(bazaPodataka);
 
             // Servisi
-            IAutentifikacijaServis autentifikacijaServis = new AutentifikacioniServis(); // TODO: Pass necessary dependencies
-            // TODO: Add other necessary services
             string putanja = "log.txt";
             ILoggerServis loggerServis = new LoggerServis(putanja);
+            IAutentifikacijaServis autentifikacijaServis = new AutentifikacioniServis(korisniciRepozitorijum,loggerServis);
+            IVinogradarstvoServis vinogradarstvoServis = new VinogradarstvoServis(lozaRepozitorijum, loggerServis);
+            IServisZaProizvodnjuVina servisZaProizvodnjuVina = new ServisZaProizvodnjuVina(vinogradarstvoServis, loggerServis);
+            IPakovanjeServis pakovanjeServis = new PakovanjeServis(paletaRepozitorijum, loggerServis, servisZaProizvodnjuVina);
 
             // Ako nema nijednog korisnika u sistemu, dodati dva nova
             if (korisniciRepozitorijum.SviKorisnici().Count() == 0)
             {
-                // TODO: Add initial users to the system
                 korisniciRepozitorijum.DodajKorisnika(new Korisnik("enolog", "enolog123", "Marko Markovic", TipKorisnika.GLAVNI_ENOLOG));
+                korisniciRepozitorijum.DodajKorisnika(new Korisnik("kelar", "kelar123", "Jovana Jovanovic", TipKorisnika.KELAR_MAJSTOR));
             }
 
-            IVinogradarstvoServis vinogradarstvoServis = new VinogradarstvoServis(lozaRepozitorijum, loggerServis);
-            IServisZaProizvodnjuVina servisZaProizvodnjuVina = new ServisZaProizvodnjuVina(vinogradarstvoServis, loggerServis);
-            IPakovanjeServis pakovanjeServis = new PakovanjeServis(paletaRepozitorijum, loggerServis, servisZaProizvodnjuVina);
             // Prezentacioni sloj
             AutentifikacioniMeni am = new AutentifikacioniMeni(autentifikacijaServis);
             Korisnik prijavljen = new Korisnik();
