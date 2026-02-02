@@ -37,7 +37,6 @@ namespace Database.BazaPodataka
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Baca se sledeci exception: " + ex.Message);
                 return false;
             }
         }
@@ -57,7 +56,8 @@ namespace Database.BazaPodataka
                 .Select(k => new Korisnik
                 {
                     Id = long.TryParse(k.Element("ID")?.Value, out var id) ? id : 0,
-                    KorisnickoIme = k.Element("Ime")?.Value
+                    KorisnickoIme = k.Element("Ime")?.Value ?? string.Empty,
+                    Lozinka = k.Element("Lozinka")?.Value ?? string.Empty,
                 }).ToList() ?? new List<Korisnik>();
 
 
@@ -136,7 +136,8 @@ namespace Database.BazaPodataka
                         tabele.Korisnici.Select(k =>
                             new XElement("Korisnik",
                                 new XElement("ID", k.Id),
-                                new XElement("Ime", k.KorisnickoIme)
+                                new XElement("Ime", k.KorisnickoIme),
+                                new XElement("Lozinka", k.Lozinka)
                             )
                         )
                     ),
