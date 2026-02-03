@@ -99,5 +99,20 @@ namespace Database.Repozitorijumi
                 return new VinskiPodrum(); 
             }
         }
+
+        public VinskiPodrum PrviPodrum()
+        {
+            try
+            {
+                if (BazaPodataka.Tabele.Podrumi.Count > 0)
+                    return BazaPodataka.Tabele.Podrumi[0];
+                else
+                    return new VinskiPodrum();
+            }
+            catch
+            {
+                return new VinskiPodrum();
+            }
+        }
     }
 }

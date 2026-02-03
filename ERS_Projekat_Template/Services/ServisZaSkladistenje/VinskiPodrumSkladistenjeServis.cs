@@ -16,45 +16,73 @@ namespace Services.ServisZaSkladistenje
         ILoggerServis loggerServis;
         IPakovanjeServis pakovanjeServis;
         IPodrumRepozitorijum podrumRepozitorijum;
-        int VREME_PAKOVANJA_SEKUNDE = IsporukaVremeKonstante.VINSKI_PODRUM_ISPORUKA_SEKUNDE;
-        int MAKS_PALETA = IsporukaBrojPaletaKonstante.VINSKI_PODRUM_MAKS_BROJ_PALETA;
-        public VinskiPodrumSkladistenjeServis(ILoggerServis logger, IPakovanjeServis pakovanje,IPodrumRepozitorijum podrum)
+        IPaletaRepozitorijum paletaRepozitorijum;
+        const int VREME_PAKOVANJA_SEKUNDE = IsporukaVremeKonstante.VINSKI_PODRUM_ISPORUKA_SEKUNDE;
+        const int MAKS_PALETA = IsporukaBrojPaletaKonstante.VINSKI_PODRUM_MAKS_BROJ_PALETA;
+        public VinskiPodrumSkladistenjeServis(ILoggerServis logger, IPakovanjeServis pakovanje,IPodrumRepozitorijum podrum, IPaletaRepozitorijum paletaRepozitorijum)
         {
             loggerServis = logger;
             pakovanjeServis = pakovanje;
             podrumRepozitorijum = podrum;
+            this.paletaRepozitorijum = paletaRepozitorijum;
         }
 
-        public List<Paleta> IsporukaPalete(TipVina tipVina, int brojFlasa, double zapreminaFlase, string nazivLoze)
+        public List<Paleta> IsporukaPalete(TipVina tipVina, int brojPaleta, double zapreminaFlase, string nazivLoze)
         {
             try
             {
-                List<Paleta> isporucenePalete = [];
-
-                while (brojFlasa > 0)
+                if (brojPaleta > MAKS_PALETA)
                 {
-                    Paleta paleta = pakovanjeServis.PakovanjeVina(tipVina, brojFlasa / MAKS_PALETA, zapreminaFlase, nazivLoze);
+                    loggerServis.EvidentirajDogadjaj(TipEvidencije.ERROR, $"Maksimalan broj paleta koji se moze dostaviti iz vinskog podruma je {MAKS_PALETA} - trazeno: {brojPaleta}.");
+                    return [];
+                }
+
+                List<Paleta> isporucenePalete = [];
+                VinskiPodrum kelar = new VinskiPodrum();
+
+                if (podrumRepozitorijum.BrojPodruma() == 0)
+                {
+                    VinskiPodrum podrum = new VinskiPodrum("Vinski Podrum", 12, 10);
+                    podrumRepozitorijum.DodajPodrum(podrum);
+                    loggerServis.EvidentirajDogadjaj(TipEvidencije.INFO, $"Napravljen novi podrum '{podrum.Naziv}'.");
+                }
+
+                kelar = podrumRepozitorijum.PrviPodrum();
+
+                if (kelar.Naziv == string.Empty)
+                {
+                    loggerServis.EvidentirajDogadjaj(TipEvidencije.ERROR, "Neuspešna isporuka paleta iz vinskog podruma - ne postoji kelar.");
+                    return [];
+                }
+
+                while (brojPaleta > 0)
+                {
+                    Paleta paleta = new Paleta();
+                    if (kelar.IDPalete.Count() > brojPaleta)
+                    {
+                        paleta = paletaRepozitorijum.PronadjiPaletuPoID(kelar.IDPalete[brojPaleta - 1]);
+                    }
+                    else
+                        paleta = pakovanjeServis.SlanjePalete(kelar.Id, tipVina, zapreminaFlase, nazivLoze);
 
                     if (paleta.SifraPalete != string.Empty)
                     {
                         isporucenePalete.Add(paleta);
-                        brojFlasa -= brojFlasa / MAKS_PALETA;
-
                         Task.Delay(VREME_PAKOVANJA_SEKUNDE).Wait();
                     }
                     else
                     {
-                        loggerServis.EvidentirajDogadjaj(TipEvidencije.ERROR, "Neuspešna isporuka paleta iz lokalnog kelara.");
+                        loggerServis.EvidentirajDogadjaj(TipEvidencije.ERROR, "Neuspešna isporuka paleta iz vinskog podruma.");
                         return [];
                     }
                 }
 
-                loggerServis.EvidentirajDogadjaj(TipEvidencije.INFO, "Uspešna isporuka paleta iz lokalnog kelara.");
+                loggerServis.EvidentirajDogadjaj(TipEvidencije.INFO, "Uspešna isporuka paleta iz vinskog podruma.");
                 return isporucenePalete;
             }
             catch
             {
-                loggerServis.EvidentirajDogadjaj(TipEvidencije.ERROR, "Neuspešna isporuka paleta iz lokalnog kelara.");
+                loggerServis.EvidentirajDogadjaj(TipEvidencije.ERROR, "Neuspešna isporuka paleta iz vinskog podruma.");
                 return [];
             }
         }
