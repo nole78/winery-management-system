@@ -14,5 +14,7 @@ namespace Domain.Repozitorijumi
         public VinskiPodrum PronadjiPodrumPoID(string id);
         public IEnumerable<VinskiPodrum> PregledSvihPodruma();
         public bool AzurirajPodrum(VinskiPodrum podrum);
+        public int BrojPodruma();
+        public VinskiPodrum PrviPodrum();
     }
 }

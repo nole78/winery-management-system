@@ -2,6 +2,7 @@
 using Domain.Repozitorijumi;
 using Domain.Enumeracije;
 using Domain.Servisi;
+using Domain.Konstante;
 
 namespace Services.PakovanjeServisi
 {
@@ -10,6 +11,7 @@ namespace Services.PakovanjeServisi
         IPaletaRepozitorijum paletaRepozitorijum;
         IServisZaProizvodnjuVina servisZaProizvodnju;
         ILoggerServis loggerServis;
+        const int BROJ_FLASA = BrojVinaPoPaleti.KOLICINA_VINA_PO_PALETI;
 
         public PakovanjeServis(IPaletaRepozitorijum paletaRepozitorijum, ILoggerServis loggerServis, IServisZaProizvodnjuVina servisZaProizvodnju)
         {
@@ -18,11 +20,11 @@ namespace Services.PakovanjeServisi
             this.servisZaProizvodnju = servisZaProizvodnju;
         }
 
-        public Paleta PakovanjeVina(TipVina tipVina, int brojFlasa, double zapreminaFlase, string nazivLoze)
+        public Paleta PakovanjeVina(TipVina tipVina, double zapreminaFlase, string nazivLoze)
         {
             try
             {
-                List<Vino> vina = servisZaProizvodnju.DobaviVina(tipVina, brojFlasa, zapreminaFlase, nazivLoze);
+                List<Vino> vina = servisZaProizvodnju.DobaviVina(tipVina, BROJ_FLASA, zapreminaFlase, nazivLoze);
                 IEnumerable<Paleta> palete = paletaRepozitorijum.PregledSvihPaleta();
                 
                 List<string> IDvina = new List<string>();
@@ -78,14 +80,14 @@ namespace Services.PakovanjeServisi
             }
         }
 
-        public Paleta SlanjePalete(long IDPodruma, TipVina tipVina, int brojFlasa, double zapreminaFlase, string nazivLoze)
+        public Paleta SlanjePalete(string IDPodruma, TipVina tipVina, double zapreminaFlase, string nazivLoze)
         {
             try
             {
                 IEnumerable<Paleta> palete = paletaRepozitorijum.PronadjiPaletuPoStatusu(StatusPalete.UPAKOVANA);
                 if(palete.Count() == 0)
                 {
-                    Paleta paleta = PakovanjeVina(tipVina,brojFlasa,zapreminaFlase,nazivLoze);
+                    Paleta paleta = PakovanjeVina(tipVina,zapreminaFlase,nazivLoze);
                     
                     if(paleta.SifraPalete != string.Empty)
                     {
