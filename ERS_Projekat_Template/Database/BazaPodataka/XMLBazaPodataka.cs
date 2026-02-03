@@ -58,6 +58,7 @@ namespace Database.BazaPodataka
                     Id = long.TryParse(k.Element("ID")?.Value, out var id) ? id : 0,
                     KorisnickoIme = k.Element("Ime")?.Value ?? string.Empty,
                     Lozinka = k.Element("Lozinka")?.Value ?? string.Empty,
+                    Uloga = Enum.TryParse<TipKorisnika>(k.Element("Uloga")?.Value, out var uloga) ? uloga : TipKorisnika.KELAR_MAJSTOR,
                 }).ToList() ?? new List<Korisnik>();
 
 
@@ -137,7 +138,8 @@ namespace Database.BazaPodataka
                             new XElement("Korisnik",
                                 new XElement("ID", k.Id),
                                 new XElement("Ime", k.KorisnickoIme),
-                                new XElement("Lozinka", k.Lozinka)
+                                new XElement("Lozinka", k.Lozinka),
+                                new XElement("Uloga", k.Uloga.ToString())
                             )
                         )
                     ),
@@ -149,7 +151,7 @@ namespace Database.BazaPodataka
                                 new XElement("NivoSecera", vl.NivoSecera),
                                 new XElement("GodinaSadnje", vl.GodSadnje),
                                 new XElement("Region", vl.RegionUzgoja),
-                                new XElement("Faza", vl.Zrelost)
+                                new XElement("Faza", vl.Zrelost.ToString())
                             )
                         )
                     ),
@@ -162,7 +164,7 @@ namespace Database.BazaPodataka
                                 new XElement("Zapremina", v.Zapremina),
                                 new XElement("SifraSerije", v.SifraSerije),
                                 new XElement("IdLoze", v.IdLoze),
-                                new XElement("DatumFlasiranja", v.DatumFlasiranja)
+                                new XElement("DatumFlasiranja", v.DatumFlasiranja.ToString())
                             )
                         )
                     ),
@@ -172,7 +174,7 @@ namespace Database.BazaPodataka
                        new XElement("SifraPalete", p.SifraPalete),
                        new XElement("AdrOdredista", p.AdrOdredista),
                        new XElement("IDPodruma", p.IDPodruma),
-                       new XElement("Status", p.Status),
+                       new XElement("Status", p.Status.ToString()),
                        new XElement("Vina",
                        p.IDVina.Select(id => new XElement("IDVina", id))
                          )
