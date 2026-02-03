@@ -78,7 +78,7 @@ namespace Services.PakovanjeServisi
             }
         }
 
-        public Paleta SlanjePalete(long IDPodruma, TipVina tipVina, int brojFlasa, double zapreminaFlase, string nazivLoze)
+        public Paleta SlanjePalete(string IDPodruma, TipVina tipVina, int brojFlasa, double zapreminaFlase, string nazivLoze)
         {
             try
             {

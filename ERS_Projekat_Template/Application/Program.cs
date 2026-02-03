@@ -12,6 +12,7 @@ using Services.LoggerServisi;
 using Services.VinogradarstvoServis;
 using Services.ServisiZaProizvodnjuVina;
 using Services.PakovanjeServisi;
+using Services.ServisZaSkladistenje;
 
 namespace Loger_Bloger
 {
@@ -36,6 +37,7 @@ namespace Loger_Bloger
             IVinogradarstvoServis vinogradarstvoServis = new VinogradarstvoServis(lozaRepozitorijum, loggerServis);
             IServisZaProizvodnjuVina servisZaProizvodnjuVina = new ServisZaProizvodnjuVina(vinogradarstvoServis, loggerServis);
             IPakovanjeServis pakovanjeServis = new PakovanjeServis(paletaRepozitorijum, loggerServis, servisZaProizvodnjuVina);
+            IServisZaSkladistenje servisSkladistenja;
 
             // Ako nema nijednog korisnika u sistemu, dodati dva nova
             if (korisniciRepozitorijum.SviKorisnici().Count() == 0)
@@ -55,6 +57,11 @@ namespace Loger_Bloger
 
             Console.Clear();
             Console.WriteLine($"Uspešno ste prijavljeni kao: {prijavljen.ImePrezime} ({prijavljen.Uloga})");
+
+            if(prijavljen.Uloga == TipKorisnika.GLAVNI_ENOLOG)
+                servisSkladistenja = new VinskiPodrumSkladistenjeServis(loggerServis,pakovanjeServis); // TODO
+            else
+                servisSkladistenja = new LokalniKelarSkladistenjeServis(loggerServis,pakovanjeServis); // TODO
 
             OpcijeMeni meni = new OpcijeMeni(); // TODO: Pass necessary dependencies
             meni.PrikaziMeni();

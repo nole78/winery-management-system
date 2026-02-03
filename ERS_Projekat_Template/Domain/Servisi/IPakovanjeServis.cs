@@ -6,6 +6,6 @@ namespace Domain.Servisi
     public interface IPakovanjeServis
     {
         public Paleta PakovanjeVina(TipVina tipVina, int brojFlasa, double zapreminaFlase, string nazivLoze);
-        public Paleta SlanjePalete(long IDPodruma, TipVina tipVina, int brojFlasa, double zapreminaFlase, string nazivLoze);
+        public Paleta SlanjePalete(string IDPodruma, TipVina tipVina, int brojFlasa, double zapreminaFlase, string nazivLoze);
     }
 }

@@ -35,7 +35,7 @@ namespace Database.BazaPodataka
                 SaveToXml(Tabele);
                 return true;
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }
@@ -51,7 +51,7 @@ namespace Database.BazaPodataka
             var doc = XDocument.Load(_putanja);
 
 
-            tabele.Korisnici = doc.Root.Element("Korisnici")?
+            tabele.Korisnici = doc.Root?.Element("Korisnici")?
                 .Elements("Korisnik")
                 .Select(k => new Korisnik
                 {
@@ -61,43 +61,43 @@ namespace Database.BazaPodataka
                 }).ToList() ?? new List<Korisnik>();
 
 
-            tabele.VinoveLoze = doc.Root.Element("VinoveLoze")?
+            tabele.VinoveLoze = doc.Root?.Element("VinoveLoze")?
                 .Elements("VinovaLoza")
                 .Select(x => new VinovaLoza
                 {
-                    Id = x.Element("ID")?.Value,
-                    Naziv = x.Element("Naziv")?.Value,
+                    Id = x.Element("ID")?.Value ?? string.Empty,
+                    Naziv = x.Element("Naziv")?.Value ?? string.Empty,
                     NivoSecera = float.Parse(x.Element("NivoSecera")?.Value ?? "0"),
                     GodSadnje = int.Parse(x.Element("GodinaSadnje")?.Value ?? "0"),
-                    RegionUzgoja = x.Element("Region")?.Value,
+                    RegionUzgoja = x.Element("Region")?.Value ?? string.Empty,
                     Zrelost = Enum.TryParse<FazaZrelosti>(x.Element("Faza")?.Value, out var faza)
                                 ? faza
                                 : FazaZrelosti.CVETA
                 }).ToList() ?? new List<VinovaLoza>();
 
 
-            tabele.Vina = doc.Root.Element("Vina")?
+            tabele.Vina = doc.Root?.Element("Vina")?
                 .Elements("Vino")
                 .Select(v => new Vino
                 {
-                    ID_VINA = v.Element("ID_VINA")?.Value,
-                    Naziv = v.Element("Naziv")?.Value,
+                    ID_VINA = v.Element("ID_VINA")?.Value ?? string.Empty,
+                    Naziv = v.Element("Naziv")?.Value ?? string.Empty,
                     Tip = Enum.TryParse<TipVina>(v.Element("Tip")?.Value, out var tip) ? tip : TipVina.STOLNO,
                     Zapremina = double.Parse(v.Element("Zapremina")?.Value ?? "0"),
-                    SifraSerije = v.Element("SifraSerije")?.Value,
-                    IdLoze = v.Element("IdLoze")?.Value,
+                    SifraSerije = v.Element("SifraSerije")?.Value ?? string.Empty,
+                    IdLoze = v.Element("IdLoze")?.Value ?? string.Empty,
                     DatumFlasiranja = DateTime.TryParse(v.Element("DatumFlasiranja")?.Value, out var df) ? df : DateTime.Now
                 }).ToList() ?? new List<Vino>();
 
 
            
-            tabele.Palete = doc.Root.Element("Palete")?
+            tabele.Palete = doc.Root?.Element("Palete")?
              .Elements("Paleta")
              .Select(p => new Paleta
             {
                SifraPalete = p.Element("SifraPalete")?.Value ?? string.Empty,
                AdrOdredista = p.Element("AdrOdredista")?.Value ?? string.Empty,
-               IDPodruma = long.TryParse(p.Element("IDPodruma")?.Value, out var idp) ? idp : 0,
+               IDPodruma = p.Element("IDPodruma")?.Value ?? string.Empty,
                Status = Enum.TryParse<StatusPalete>(
                  p.Element("Status")?.Value,
                  out var status)
@@ -111,7 +111,7 @@ namespace Database.BazaPodataka
 
        
 
-            tabele.Podrumi = doc.Root.Element("Podrumi")?
+            tabele.Podrumi = doc.Root?.Element("Podrumi")?
            .Elements("Podrum")
            .Select(p => new VinskiPodrum
          {

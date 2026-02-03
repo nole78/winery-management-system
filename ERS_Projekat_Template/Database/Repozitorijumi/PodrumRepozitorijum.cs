@@ -35,6 +35,18 @@ namespace Database.Repozitorijumi
             catch { return false; }
         }
 
+        public int BrojPodruma()
+        {
+            try
+            {
+                return BazaPodataka.Tabele.Podrumi.Count;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
         public VinskiPodrum DodajPodrum(VinskiPodrum podrum)
         {
             try
