@@ -91,10 +91,11 @@ namespace Database.Repozitorijumi
             try
             {
                 var podrumi = PregledSvihPodruma();
-                if(podrumi.Count() > 0)
+                if (podrumi.Count() > 0)
                     return podrumi.First();
                 else
-                    return DodajPodrum(new VinskiPodrum("Lokalni Kelar", 12, 10));
+
+                    return DodajPodrum(new VinskiPodrum { MaxPaleta = 10,Naziv = "Lokalni Kelar", Temperatura = 12});
             }
             catch
             {

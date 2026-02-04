@@ -14,8 +14,9 @@ namespace Domain.Modeli
 
         public Paleta() { }
 
-        public Paleta(string adrOdredista, string iDPodruma, StatusPalete status)
+        public Paleta(string sifra,string adrOdredista, string iDPodruma, StatusPalete status)
         {
+            SifraPalete = sifra;
             AdrOdredista = adrOdredista;
             IDPodruma = iDPodruma;
             Status = status;

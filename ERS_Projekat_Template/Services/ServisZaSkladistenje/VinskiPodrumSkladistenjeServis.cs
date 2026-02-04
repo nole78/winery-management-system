@@ -42,7 +42,7 @@ namespace Services.ServisZaSkladistenje
                     return [];
                 }
 
-                while(brojPaleta < MAKS_PALETA)
+                while(brojPaleta > 0)
                 {
                     Paleta paleta = pakovanjeServis.SlanjePalete(kelar.Id, tipVina, zapreminaFlase, nazivLoze);
                     if(paleta.SifraPalete != string.Empty)
@@ -54,7 +54,7 @@ namespace Services.ServisZaSkladistenje
                         loggerServis.EvidentirajDogadjaj(TipEvidencije.ERROR, "Neuspešna isporuka paleta iz vinskog podruma - greška pri pakovanju palete.");
                         return [];
                     }
-
+                    brojPaleta--;
                     Task.Delay(VREME_PAKOVANJA_SEKUNDE).Wait();
                 }
 

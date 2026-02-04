@@ -55,7 +55,7 @@ namespace Services.ServisZaSkladistenje
                         loggerServis.EvidentirajDogadjaj(TipEvidencije.ERROR, "Neuspešna isporuka paleta iz lokalnog kelara - greška pri pakovanju palete.");
                         return [];
                     }
-
+                    brojPaleta--;
                     Task.Delay(VREME_PAKOVANJA_SEKUNDE).Wait();
                 }
 

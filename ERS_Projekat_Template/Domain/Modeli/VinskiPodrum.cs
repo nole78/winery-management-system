@@ -14,8 +14,9 @@ namespace Domain.Modeli
         public int MaxPaleta { get; set; } = 0;
         //public List<string> IDPalete { get; set; } = new List<string>();
         public VinskiPodrum() {}
-        public VinskiPodrum(string naziv, int temperatura, int maxPaleta)
+        public VinskiPodrum(string id,string naziv, int temperatura, int maxPaleta)
         {
+            Id = id;
             Naziv = naziv;
             Temperatura = temperatura;
             MaxPaleta = maxPaleta;
