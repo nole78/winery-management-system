@@ -26,7 +26,7 @@ namespace Services.AutenftikacioniServisi
             }
             else
             {
-                loggerServis.EvidentirajDogadjaj(TipEvidencije.WARNING, $"Neuspešna prijava korisnika {korisnickoIme}.");
+                loggerServis.EvidentirajDogadjaj(TipEvidencije.WARNING, $"Neuspešna prijava korisnika '{korisnickoIme}'.");
                 return(false, new Korisnik());
             }
         }
