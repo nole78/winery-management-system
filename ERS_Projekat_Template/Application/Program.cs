@@ -59,9 +59,9 @@ namespace Loger_Bloger
             Console.WriteLine($"Uspešno ste prijavljeni kao: {prijavljen.ImePrezime} ({prijavljen.Uloga})");
 
             if (prijavljen.Uloga == TipKorisnika.GLAVNI_ENOLOG)
-                servisSkladistenja = new VinskiPodrumSkladistenjeServis(loggerServis, pakovanjeServis, podrumRepozitorijum, paletaRepozitorijum);
+                servisSkladistenja = new VinskiPodrumSkladistenjeServis(loggerServis, pakovanjeServis, podrumRepozitorijum);
             else
-                servisSkladistenja = new LokalniKelarSkladistenjeServis(loggerServis, pakovanjeServis, podrumRepozitorijum, paletaRepozitorijum);
+                servisSkladistenja = new LokalniKelarSkladistenjeServis(loggerServis, pakovanjeServis, podrumRepozitorijum);
 
             OpcijeMeni meni = new OpcijeMeni(); // TODO: Pass necessary dependencies
             meni.PrikaziMeni();
