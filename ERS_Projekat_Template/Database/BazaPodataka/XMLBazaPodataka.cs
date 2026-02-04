@@ -120,10 +120,6 @@ namespace Database.BazaPodataka
             Naziv = p.Element("Naziv")?.Value ?? string.Empty,
             Temperatura = int.TryParse(p.Element("Temperatura")?.Value, out var t) ? t : 0,
             MaxPaleta = int.TryParse(p.Element("MaxPaleta")?.Value, out var m) ? m : 0,
-            IDPalete = p.Element("Palete")?
-            .Elements("IDPalete")
-            .Select(x => x.Value)
-            .ToList() ?? new List<string>()
            }).ToList() ?? new List<VinskiPodrum>();
 
             return tabele;
@@ -187,10 +183,8 @@ namespace Database.BazaPodataka
                         new XElement("Id", p.Id),
                         new XElement("Naziv", p.Naziv),
                         new XElement("Temperatura", p.Temperatura),
-                        new XElement("MaxPaleta", p.MaxPaleta),
-                        new XElement("Palete",
-                  p.IDPalete.Select(id => new XElement("IDPalete", id))
-            )
+                        new XElement("MaxPaleta", p.MaxPaleta)
+                        
         )
     )
 )
