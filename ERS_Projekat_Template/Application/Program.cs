@@ -49,21 +49,29 @@ namespace Loger_Bloger
             AutentifikacioniMeni am = new AutentifikacioniMeni(autentifikacijaServis);
             Korisnik prijavljen = new Korisnik();
 
-            while (am.TryLogin(out prijavljen) == false)
-            {
-                Console.WriteLine("Pogrešno korisničko ime ili lozinka. Pokušajte ponovo.");
+           while (true)
+           {
+
+                while (am.TryLogin(out prijavljen) == false)
+                {
+                    Console.WriteLine("\nPogrešno korisničko ime ili lozinka. Pokušajte ponovo.");
+                    Console.ReadKey();
+                    Console.Clear();
+                }
+
+                Console.Clear();
+                Console.WriteLine($"Uspešno ste prijavljeni kao: {prijavljen.ImePrezime} ({prijavljen.Uloga})");
+                Console.WriteLine("Preusmeravanje na meni...");
+                Console.ReadKey();
+
+                if (prijavljen.Uloga == TipKorisnika.GLAVNI_ENOLOG)
+                    servisSkladistenja = new VinskiPodrumSkladistenjeServis(loggerServis, pakovanjeServis, podrumRepozitorijum);
+                else
+                    servisSkladistenja = new LokalniKelarSkladistenjeServis(loggerServis, pakovanjeServis, podrumRepozitorijum);
+
+                OpcijeMeni meni = new OpcijeMeni(); // TODO: Pass necessary dependencies
+                meni.PrikaziMeni();
             }
-
-            Console.Clear();
-            Console.WriteLine($"Uspešno ste prijavljeni kao: {prijavljen.ImePrezime} ({prijavljen.Uloga})");
-
-            if (prijavljen.Uloga == TipKorisnika.GLAVNI_ENOLOG)
-                servisSkladistenja = new VinskiPodrumSkladistenjeServis(loggerServis, pakovanjeServis, podrumRepozitorijum);
-            else
-                servisSkladistenja = new LokalniKelarSkladistenjeServis(loggerServis, pakovanjeServis, podrumRepozitorijum);
-
-            OpcijeMeni meni = new OpcijeMeni(fakturaRepozitorijum, vinoRepozitorijum, loggerServis, servisSkladistenja, prodajaServis); // TODO: Pass necessary dependencies
-            meni.PrikaziMeni();
         }
     }
 }

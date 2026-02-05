@@ -14,6 +14,9 @@ namespace Presentation.Authentifikacija
 
         public bool TryLogin(out Korisnik korisnik)
         {
+            Console.WriteLine("\n============================================ PRIJAVA ===========================================");
+            Console.WriteLine();
+
             korisnik = new Korisnik();
             bool uspesnaPrijava = false;
             string? korisnickoIme = "", lozinka = "";
