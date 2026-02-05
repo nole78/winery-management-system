@@ -29,16 +29,15 @@ namespace Loger_Bloger
             ILozaRepozitorijum lozaRepozitorijum = new LozaRepozitorijum(bazaPodataka);
             IVinoRepozitorijum vinoRepozitorijum = new VinoRepozitorijum(bazaPodataka);
             IPaletaRepozitorijum paletaRepozitorijum = new PaletaRepozitorijum(bazaPodataka);
-
+            IFakturaRepozitorijum fakturaRepozitorijum = new FakturaRepozitorijum(bazaPodataka);
             // Servisi
             string putanja = "log.txt";
             ILoggerServis loggerServis = new LoggerServis(putanja);
             IAutentifikacijaServis autentifikacijaServis = new AutentifikacioniServis(korisniciRepozitorijum,loggerServis);
             IVinogradarstvoServis vinogradarstvoServis = new VinogradarstvoServis(lozaRepozitorijum, loggerServis);
-            IServisZaProizvodnjuVina servisZaProizvodnjuVina = new ServisZaProizvodnjuVina(vinogradarstvoServis, loggerServis);
+            IServisZaProizvodnjuVina servisZaProizvodnjuVina = new ServisZaProizvodnjuVina(vinoRepozitorijum, vinogradarstvoServis, loggerServis);
             IPakovanjeServis pakovanjeServis = new PakovanjeServis(paletaRepozitorijum, loggerServis, servisZaProizvodnjuVina);
-            IServisZaSkladistenje servisSkladistenja;
-
+           
             // Ako nema nijednog korisnika u sistemu, dodati dva nova
             if (korisniciRepozitorijum.SviKorisnici().Count() == 0)
             {
@@ -73,8 +72,6 @@ namespace Loger_Bloger
                 OpcijeMeni meni = new OpcijeMeni(); // TODO: Pass necessary dependencies
                 meni.PrikaziMeni();
             }
-
-
         }
     }
 }
