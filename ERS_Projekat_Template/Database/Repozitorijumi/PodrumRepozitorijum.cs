@@ -34,19 +34,6 @@ namespace Database.Repozitorijumi
             }
             catch { return false; }
         }
-
-        public int BrojPodruma()
-        {
-            try
-            {
-                return BazaPodataka.Tabele.Podrumi.Count;
-            }
-            catch
-            {
-                return 0;
-            }
-        }
-
         public VinskiPodrum DodajPodrum(VinskiPodrum podrum)
         {
             try
@@ -65,7 +52,6 @@ namespace Database.Repozitorijumi
                 return new VinskiPodrum(); 
             }
         }
-
         public IEnumerable<VinskiPodrum> PregledSvihPodruma()
         {
             List<VinskiPodrum> lista_podruma = new List<VinskiPodrum>();
@@ -100,14 +86,16 @@ namespace Database.Repozitorijumi
             }
         }
 
-        public VinskiPodrum PrviPodrum()
+        public VinskiPodrum VratiPodrum()
         {
             try
             {
-                if (BazaPodataka.Tabele.Podrumi.Count > 0)
-                    return BazaPodataka.Tabele.Podrumi[0];
+                var podrumi = PregledSvihPodruma();
+                if (podrumi.Count() > 0)
+                    return podrumi.First();
                 else
-                    return new VinskiPodrum();
+
+                    return DodajPodrum(new VinskiPodrum { MaxPaleta = 10,Naziv = "Lokalni Kelar", Temperatura = 12});
             }
             catch
             {
