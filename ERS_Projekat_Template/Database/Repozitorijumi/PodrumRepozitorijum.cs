@@ -87,9 +87,20 @@ namespace Database.Repozitorijumi
             }
         }
 
-        public VinskiPodrum PrviPodrum()
+        public bool DodajPaletuUPodrum(string idPodruma)
         {
-            throw new NotImplementedException();
+            try
+            {
+                VinskiPodrum podrum = PronadjiPodrumPoID(idPodruma);
+                if(podrum.Naziv == string.Empty)
+                    return false;
+                podrum.MaxPaleta -= 1;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public VinskiPodrum VratiPodrum()
@@ -97,11 +108,13 @@ namespace Database.Repozitorijumi
             try
             {
                 var podrumi = PregledSvihPodruma();
+                VinskiPodrum podrum = new VinskiPodrum();
                 if (podrumi.Count() > 0)
-                    return podrumi.First();
+                    podrum = podrumi.First(podrumi => podrumi.MaxPaleta > 0);
+                if (podrum.Naziv != string.Empty)
+                    return podrum;
                 else
-
-                    return DodajPodrum(new VinskiPodrum { MaxPaleta = 10,Naziv = "Lokalni Kelar", Temperatura = 12});
+                    return DodajPodrum(new VinskiPodrum { MaxPaleta = 10, Naziv = "Lokalni Kelar", Temperatura = 12 });
             }
             catch
             {

@@ -11,13 +11,21 @@ namespace Services.PakovanjeServisi
         IPaletaRepozitorijum paletaRepozitorijum;
         IServisZaProizvodnjuVina servisZaProizvodnju;
         ILoggerServis loggerServis;
-        const int BROJ_FLASA = BrojVinaPoPaleti.KOLICINA_VINA_PO_PALETI;
 
-        public PakovanjeServis(IPaletaRepozitorijum paletaRepozitorijum, ILoggerServis loggerServis, IServisZaProizvodnjuVina servisZaProizvodnju)
+        // NOVO DODANO
+        const int BROJ_FLASA = BrojVinaPoPaleti.KOLICINA_VINA_PO_PALETI;
+        IPodrumRepozitorijum podrumRepozitorijum;
+        //-------------------------------------------------------------
+
+        public PakovanjeServis(IPaletaRepozitorijum paletaRepozitorijum, ILoggerServis loggerServis, IServisZaProizvodnjuVina servisZaProizvodnju, IPodrumRepozitorijum podrumRepozitorijum)
         {
-            this.paletaRepozitorijum=paletaRepozitorijum;
-            this.loggerServis=loggerServis;
+            this.paletaRepozitorijum = paletaRepozitorijum;
+            this.loggerServis = loggerServis;
             this.servisZaProizvodnju = servisZaProizvodnju;
+
+            // NOVO DODATO
+            this.podrumRepozitorijum = podrumRepozitorijum;
+            //-------------------------------------------
         }
 
         public Paleta PakovanjeVina()
@@ -94,6 +102,15 @@ namespace Services.PakovanjeServisi
                         paleta.Status = StatusPalete.OTPREMLJENA;
                         paleta.IDPodruma = IDPodruma;
                         Paleta p = paletaRepozitorijum.DodajPaletu(paleta);
+
+                        // NOVO DODANO (kako bi se update-ovala kolicina paleta koje moze stane u podrum
+                        if(!podrumRepozitorijum.DodajPaletuUPodrum(IDPodruma))
+                        {
+                            loggerServis.EvidentirajDogadjaj(TipEvidencije.INFO, "Paleta nije otpremljena.");
+                            return new Paleta();
+                        }
+                        // -----------------------------------------------------------------------------
+
                         if (p.SifraPalete != string.Empty)
                         {
                             loggerServis.EvidentirajDogadjaj(TipEvidencije.INFO, "Paleta uspešno otpremljena.");
