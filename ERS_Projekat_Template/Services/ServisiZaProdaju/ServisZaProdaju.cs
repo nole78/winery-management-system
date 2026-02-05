@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.PomocneMetode;
 
 namespace Services.ServisiZaProdaju
 {
@@ -20,8 +21,6 @@ namespace Services.ServisiZaProdaju
         IServisZaSkladistenje servisZaSkladistenje;
         IVinoRepozitorijum vinoRepozitorijum;
 
-
-        private readonly Random random = new Random();
         public ServisZaProdaju(IVinoRepozitorijum vinoRepozitorijunm, IServisZaSkladistenje servisZaSkladistenje, IVinoRepozitorijum vinoRepo, IFakturaRepozitorijum fakturaRepo, ILoggerServis loggerServis, IServisZaProizvodnjuVina servisZaProizvodnju)
         {
             this.fakturaRepo = fakturaRepo;
@@ -40,36 +39,7 @@ namespace Services.ServisiZaProdaju
         {
             return fakturaRepo.SveFakture().ToList();
         }
-
-
-        public TipVina NasumicanTipVina()
-        {
-            var values = Enum.GetValues(typeof(TipVina));
-            return (TipVina)values.GetValue(random.Next(values.Length));
-        }
-
-       
-
-        public double NasumicnaZapremina()
-        {
-            return random.Next(2) == 0 ? 0.75 : 1.5;
-        }
-
-
-        public string NasumicnaLoza()
-        {
-            var loze = new List<string>
-            {
-                "Merlot",
-                "Cabernet Sauvignon",
-                "Chardonnay",
-                "Pinot Noir",
-                "Sauvignon Blanc"
-            };
-
-            return loze[random.Next(loze.Count)];
-        }
-
+ 
         public float IzracunajCenu(Vino vino)
         {
             return vino.Tip switch
@@ -81,33 +51,22 @@ namespace Services.ServisiZaProdaju
             };
         }
 
-
-
         public Faktura izvrsavanjeProdaje(int brojFlasa)
         {
             if (brojFlasa <= 0)
             {
                 loggerServis.EvidentirajDogadjaj(TipEvidencije.ERROR, "Broj flaša mora biti veći od nule.");
-                throw new ArgumentException(nameof(brojFlasa));
+                return new Faktura();
             }
 
-          
-            var tipVina = NasumicanTipVina();
-            var nazivLoze = NasumicnaLoza();
-            var zapremina = NasumicnaZapremina();
-
-            loggerServis.EvidentirajDogadjaj(TipEvidencije.INFO,
-                $"Pokrenuta prodaja: {brojFlasa} flaša, tip {tipVina}, loza {nazivLoze}, zapremina {zapremina}L.");
-
-          
             int brojPaleta = (int)Math.Ceiling((double)brojFlasa / 12);
 
             
-            var palete = servisZaSkladistenje.IsporukaPalete(tipVina, brojPaleta, zapremina, nazivLoze);
+            var palete = servisZaSkladistenje.IsporukaPalete(brojPaleta);
             if (palete.Count == 0)
             {
                 loggerServis.EvidentirajDogadjaj(TipEvidencije.ERROR, "Nema dostupnih paleta za isporuku.");
-                throw new InvalidOperationException("Nema dostupnih paleta za isporuku.");
+                return new Faktura();
             }
 
          
@@ -127,7 +86,7 @@ namespace Services.ServisiZaProdaju
 
             var odabranaVina = vinaZaProdaju.Take(brojFlasa).ToList();
 
-            
+            // NE NE NE TODO: OBRISIIIIII
             var stavke = odabranaVina
                 .GroupBy(v => v.ID_VINA)
                 .Select(g => new StavkaFakture

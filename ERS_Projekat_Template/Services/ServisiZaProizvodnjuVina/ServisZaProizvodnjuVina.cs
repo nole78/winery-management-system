@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Repozitorijumi;
+using Domain.PomocneMetode;
 
 namespace Services.ServisiZaProizvodnjuVina
 {
@@ -34,14 +35,14 @@ namespace Services.ServisiZaProizvodnjuVina
             if (brojFlasa <= 0)
             {
                 loger.EvidentirajDogadjaj(TipEvidencije.ERROR, "Broj flaša mora biti veći od nule.");
-                throw new ArgumentException(nameof(brojFlasa));
+                return [];
 
             }
 
             if (zapreminaFlase != 0.75 && zapreminaFlase != 1.5)
             {
                 loger.EvidentirajDogadjaj(TipEvidencije.ERROR, "Zapremina flaše mora biti 0.75 ili 1.5 litara.");
-                throw new ArgumentException(nameof(zapreminaFlase));
+                return [];
 
             }
 
@@ -70,7 +71,7 @@ namespace Services.ServisiZaProizvodnjuVina
             return (int)Math.Ceiling(ukupno / LITARA_PO_LOZI);
         }
 
-        public List<Vino> DobaviVina(TipVina tipVina, int brojFlasa, double zapreminaFlase, string nazivLoze)
+        public List<Vino> DobaviVina(int brojFlasa)
         {
             if (brojFlasa <= 0)
             {
@@ -79,13 +80,9 @@ namespace Services.ServisiZaProizvodnjuVina
 
             }
 
-            if (zapreminaFlase != 0.75 && zapreminaFlase != 1.5)
-            {
-                loger.EvidentirajDogadjaj(TipEvidencije.ERROR, "Zapremina flaše mora biti 0.75 ili 1.5 litara.");
-                throw new ArgumentException(nameof(zapreminaFlase));
-
-            }
-
+            double zapreminaFlase = NasumicnaZapreminaFlase.GenerisiNasumicnaZapreminaFlase();
+            string nazivLoze = NasumicnaLoza.GenerisiNasumicnaLoza();
+            TipVina tipVina = NasumicanTipVina.GenerisiNasumicanTipVina();
 
 
             int potrebnoLoza = IzracunajPotrebnuKolicinuLoza(brojFlasa, zapreminaFlase);
@@ -96,7 +93,7 @@ namespace Services.ServisiZaProizvodnjuVina
             if (obraneLoze.Count < potrebnoLoza)
             {
                 loger.EvidentirajDogadjaj(TipEvidencije.ERROR, "Nema dovoljno loza za proizvodnju vina.");
-                throw new InvalidOperationException("Nema dovoljno loza za proizvodnju vina.");
+                return [];
             }
             
             return PokreniFermentaciju(tipVina, brojFlasa, zapreminaFlase);

@@ -34,6 +34,7 @@ namespace Database.Repozitorijumi
             }
             catch { return false; }
         }
+
         public VinskiPodrum DodajPodrum(VinskiPodrum podrum)
         {
             try
@@ -84,6 +85,11 @@ namespace Database.Repozitorijumi
             { 
                 return new VinskiPodrum(); 
             }
+        }
+
+        public VinskiPodrum PrviPodrum()
+        {
+            throw new NotImplementedException();
         }
 
         public VinskiPodrum VratiPodrum()

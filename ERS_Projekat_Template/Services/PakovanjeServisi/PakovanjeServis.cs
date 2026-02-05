@@ -20,11 +20,11 @@ namespace Services.PakovanjeServisi
             this.servisZaProizvodnju = servisZaProizvodnju;
         }
 
-        public Paleta PakovanjeVina(TipVina tipVina, double zapreminaFlase, string nazivLoze)
+        public Paleta PakovanjeVina()
         {
             try
             {
-                List<Vino> vina = servisZaProizvodnju.DobaviVina(tipVina, BROJ_FLASA, zapreminaFlase, nazivLoze);
+                List<Vino> vina = servisZaProizvodnju.DobaviVina(BROJ_FLASA);
                 IEnumerable<Paleta> palete = paletaRepozitorijum.PregledSvihPaleta();
                 
                 List<string> IDvina = new List<string>();
@@ -80,14 +80,14 @@ namespace Services.PakovanjeServisi
             }
         }
 
-        public Paleta SlanjePalete(string IDPodruma, TipVina tipVina, double zapreminaFlase, string nazivLoze)
+        public Paleta SlanjePalete(string IDPodruma)
         {
             try
             {
                 IEnumerable<Paleta> palete = paletaRepozitorijum.PronadjiPaletuPoStatusu(StatusPalete.UPAKOVANA);
                 if(palete.Count() == 0)
                 {
-                    Paleta paleta = PakovanjeVina(tipVina,zapreminaFlase,nazivLoze);
+                    Paleta paleta = PakovanjeVina();
                     
                     if(paleta.SifraPalete != string.Empty)
                     {

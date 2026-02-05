@@ -24,7 +24,7 @@ namespace Services.ServisZaSkladistenje
             pakovanjeServis = pakovanje;
             podrumRepozitorijum = podrum;
         }
-        public List<Paleta> IsporukaPalete(TipVina tipVina, int brojPaleta, double zapreminaFlase, string nazivLoze)
+        public List<Paleta> IsporukaPalete(int brojPaleta)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace Services.ServisZaSkladistenje
 
                 while(brojPaleta > 0)
                 {
-                    Paleta paleta = pakovanjeServis.SlanjePalete(kelar.Id, tipVina, zapreminaFlase, nazivLoze);
+                    Paleta paleta = pakovanjeServis.SlanjePalete(kelar.Id);
                     if(paleta.SifraPalete != string.Empty)
                     {
                         isporucenePalete.Add(paleta);

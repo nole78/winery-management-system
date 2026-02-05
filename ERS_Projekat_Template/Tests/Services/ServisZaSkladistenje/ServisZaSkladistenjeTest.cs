@@ -61,7 +61,7 @@ namespace Tests.Services.ServisZaSkladistenje
             // Arrange
             int trazeniBrojPaleta = IsporukaBrojPaletaKonstante.VINSKI_PODRUM_MAKS_BROJ_PALETA + 1;
             // Act
-            var rezultat = _skladistenjeServis.IsporukaPalete(TipVina.STOLNO, trazeniBrojPaleta, 0.75, "Loza");
+            var rezultat = _skladistenjeServis.IsporukaPalete(trazeniBrojPaleta);
             // Assert
             Assert.That(rezultat, Is.Empty);
             _loggerServis.Verify(
@@ -79,14 +79,14 @@ namespace Tests.Services.ServisZaSkladistenje
             int trazeniBrojPaleta = IsporukaBrojPaletaKonstante.VINSKI_PODRUM_MAKS_BROJ_PALETA - 1;
             int brojac = 1;
             _pakovanjeServis
-                .Setup(p => p.SlanjePalete(It.IsAny<string>(), It.IsAny<TipVina>(), It.IsAny<double>(), It.IsAny<string>()))
+                .Setup(p => p.SlanjePalete(It.IsAny<string>()))
                 .Returns(() => new Paleta((brojac++).ToString(), "kelar", "123", StatusPalete.OTPREMLJENA));
             _podrumRepozitorijum
                 .Setup(p => p.VratiPodrum())
                 .Returns(new VinskiPodrum { Id = "123", Naziv = "kelar", Temperatura = 12, MaxPaleta = 100 });
 
             // Act
-            var rezultat = _skladistenjeServis.IsporukaPalete(TipVina.STOLNO, trazeniBrojPaleta, 0.75, "Loza");
+            var rezultat = _skladistenjeServis.IsporukaPalete(trazeniBrojPaleta);
             // Assert
             Assert.That(rezultat.Count, Is.EqualTo(trazeniBrojPaleta));
 
@@ -101,7 +101,7 @@ namespace Tests.Services.ServisZaSkladistenje
 
             // Provera da je metoda SlanjePalete pozvana tacan broj puta
             _pakovanjeServis.Verify(
-                x => x.SlanjePalete(It.IsAny<string>(), It.IsAny<TipVina>(), It.IsAny<double>(), It.IsAny<string>()),
+                x => x.SlanjePalete(It.IsAny<string>()),
                 Times.Exactly(trazeniBrojPaleta)
             );
 

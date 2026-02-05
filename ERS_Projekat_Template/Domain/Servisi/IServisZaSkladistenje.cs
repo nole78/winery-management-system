@@ -10,6 +10,6 @@ namespace Domain.Servisi
 {
     public interface IServisZaSkladistenje
     {
-        List<Paleta> IsporukaPalete(TipVina tipVina, int brojFlasa, double zapreminaFlase, string nazivLoze);
+        List<Paleta> IsporukaPalete(int brojFlasa);
     }
 }
