@@ -15,8 +15,8 @@ namespace Domain.Modeli
         public Guid Id { get;  set; }
         public TipProdaje TipProdaje { get;  set; }
         public NacinPlacanja NacinPlacanja { get;  set; }
-        public List<StavkaFakture> Stavke { get;  set; }
-        public decimal UkupanIznos { get;  set; }
+        public List<StavkaFakture> Stavke { get; set; } = [];
+        public float UkupanIznos { get; set; } = 0;
         public DateTime DatumKreiranja { get;  set; }
 
         public Faktura() {

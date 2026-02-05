@@ -8,10 +8,12 @@ namespace Domain.Modeli
 {
     public class StavkaFakture
     {
-        public string VinoId { get; set; }
-        public string NazivVina { get; set; }
-        public double Zapremina { get; set; }
-        public int Kolicina { get; set; }
-        public decimal JedinicnaCena { get; set; }
+        public string VinoId { get; set; } = string.Empty;
+        public string NazivVina { get; set; } = string.Empty;
+        public double Zapremina { get; set; } = 0;
+        public int Kolicina { get; set; } = 0;
+        public float JedinicnaCena { get; set; } = 0;
+
+        public StavkaFakture() { }
     }
 }

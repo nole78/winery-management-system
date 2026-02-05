@@ -57,6 +57,7 @@ namespace Database.BazaPodataka
                 {
                     Id = long.TryParse(k.Element("ID")?.Value, out var id) ? id : 0,
                     KorisnickoIme = k.Element("Ime")?.Value ?? string.Empty,
+                    ImePrezime = k.Element("ImePrezime")?.Value ?? string.Empty,
                     Lozinka = k.Element("Lozinka")?.Value ?? string.Empty,
                     Uloga = Enum.TryParse<TipKorisnika>(k.Element("Uloga")?.Value, out var uloga) ? uloga : TipKorisnika.KELAR_MAJSTOR,
                 }).ToList() ?? new List<Korisnik>();
@@ -134,6 +135,7 @@ namespace Database.BazaPodataka
                             new XElement("Korisnik",
                                 new XElement("ID", k.Id),
                                 new XElement("Ime", k.KorisnickoIme),
+                                new XElement("ImePrezime", k.ImePrezime),
                                 new XElement("Lozinka", k.Lozinka),
                                 new XElement("Uloga", k.Uloga.ToString())
                             )
