@@ -13,8 +13,9 @@ namespace Domain.Modeli
 
         public VinovaLoza(){}
 
-        public VinovaLoza(string naziv, float nivoSecera, int godSadnje, string regionUzgoja, FazaZrelosti zrelost)
+        public VinovaLoza(string id, string naziv, float nivoSecera, int godSadnje, string regionUzgoja, FazaZrelosti zrelost)
         {
+            Id = id;
             Naziv=naziv;
             NivoSecera=nivoSecera;
             GodSadnje=godSadnje;

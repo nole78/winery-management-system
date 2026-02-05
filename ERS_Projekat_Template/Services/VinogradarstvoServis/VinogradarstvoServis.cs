@@ -4,6 +4,7 @@ using Domain.Enumeracije;
 using Domain.Repozitorijumi;
 using Domain.PomocneMetode.Loza;
 using Domain.Konstante.NivoSeceraLoze;
+using Domain.PomocneMetode;
 
 namespace Services.VinogradarstvoServis
 {
@@ -28,13 +29,14 @@ namespace Services.VinogradarstvoServis
                     return new VinovaLoza();
                 }
 
-                Random random = new Random();
-                float nivoSecera = (float)Math.Round(random.NextDouble() * (28.0 - 15.0) + 15.0, 2);
-                int godina = DateTime.Now.Year;
-                string region = NasumicanRegionUzgoja.GenerisiNasumicanRegion();
-                FazaZrelosti faza = FazaZrelosti.POSADJENA;
+                VinovaLoza novaLoza = new VinovaLoza();
 
-                VinovaLoza novaLoza = new VinovaLoza(naziv, nivoSecera, godina, region, faza);
+                Random random = new Random();
+                novaLoza.Naziv = NasumicnaLoza.GenerisiNasumicnaLoza();
+                novaLoza.NivoSecera = (float)Math.Round(random.NextDouble() * (28.0 - 15.0) + 15.0, 2);
+                novaLoza.GodSadnje = DateTime.Now.Year;
+                novaLoza.RegionUzgoja = NasumicanRegionUzgoja.GenerisiNasumicanRegion();
+                novaLoza.Zrelost = FazaZrelosti.POSADJENA;
 
                 loggerServis.EvidentirajDogadjaj(TipEvidencije.INFO, $"Posadjena je nova loza - ID : {novaLoza.Id}, Naziv : {novaLoza.Naziv}, Nivo secera : {novaLoza.NivoSecera}, Region uzgoja : {novaLoza.RegionUzgoja}, Godina sadnje : {novaLoza.GodSadnje}.");
 
