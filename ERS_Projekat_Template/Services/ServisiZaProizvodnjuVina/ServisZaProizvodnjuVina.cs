@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Domain.Repozitorijumi;
 
 namespace Services.ServisiZaProizvodnjuVina
 {
@@ -16,12 +16,15 @@ namespace Services.ServisiZaProizvodnjuVina
     {
         private const double LITARA_PO_LOZI = 1.2;
 
+        IVinoRepozitorijum vinoRepozitorijum;
+
 
         private readonly IVinogradarstvoServis vinogradarstvoServis;
         ILoggerServis loger;
 
-        public ServisZaProizvodnjuVina(IVinogradarstvoServis vinogradarstvoServis, ILoggerServis loger)
+        public ServisZaProizvodnjuVina(IVinoRepozitorijum vinoRepozitorijum, IVinogradarstvoServis vinogradarstvoServis, ILoggerServis loger)
         {
+            this.vinoRepozitorijum = vinoRepozitorijum;
             this.vinogradarstvoServis = vinogradarstvoServis;
             this.loger = loger;
         }
@@ -55,6 +58,7 @@ namespace Services.ServisiZaProizvodnjuVina
                     DatumFlasiranja = DateTime.Now
                 });
                 loger.EvidentirajDogadjaj(TipEvidencije.INFO, $"Proizvedeno vino tipa {tipVina} sa zapreminom {zapreminaFlase}L.");
+                vinoRepozitorijum.DodajVino(vina.Last());   
             }
 
             return vina;

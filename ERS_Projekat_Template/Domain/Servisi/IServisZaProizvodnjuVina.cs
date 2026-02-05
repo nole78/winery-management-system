@@ -12,8 +12,8 @@ namespace Domain.Servisi
     {
 
   
-        List<Vino> PokreniFermentaciju(TipVina tipVina, int brojFlasa, double zapreminaFlase);
+       public List<Vino> PokreniFermentaciju(TipVina tipVina, int brojFlasa, double zapreminaFlase);
 
-        List<Vino> DobaviVina(TipVina tipVina,int brojFlasa,double zapreminaFlase, string nazivLoze);
+       public List<Vino> DobaviVina(TipVina tipVina,int brojFlasa,double zapreminaFlase, string nazivLoze);
     }
 }
