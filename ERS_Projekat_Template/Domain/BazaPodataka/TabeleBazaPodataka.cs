@@ -10,6 +10,8 @@ namespace Domain.BazaPodataka
         public List<Paleta> Palete { get; set; } = [];
         public List<VinskiPodrum> Podrumi { get; set; } = [];
 
+        
+
         public List<Faktura> Fakture { get; set; } = [];
         // TODO: Add other database tables as needed
         public TabeleBazaPodataka() { }

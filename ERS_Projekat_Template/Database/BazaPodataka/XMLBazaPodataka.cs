@@ -123,6 +123,31 @@ namespace Database.BazaPodataka
             MaxPaleta = int.TryParse(p.Element("MaxPaleta")?.Value, out var m) ? m : 0,
            }).ToList() ?? new List<VinskiPodrum>();
 
+            tabele.Fakture = doc.Root?.Element("Fakture")?
+                .Elements("Faktura")
+                .Select(f => new Faktura
+                {
+                    Id = f.Element("Id")?.Value ?? string.Empty,
+                    DatumKreiranja = DateTime.TryParse(f.Element("DatumKreiranja")?.Value, out var di) ? di : DateTime.Now,
+                    TipProdaje = Enum.TryParse<TipProdaje>(f.Element("TipProdaje")?.Value , out var rezultat) ? rezultat : TipProdaje.Restoranska,
+                    NacinPlacanja = Enum.TryParse<NacinPlacanja>(f.Element("NacinPlacanja")?.Value, out var np) ? np : NacinPlacanja.GotovinskiRacun,
+                    Kolicina = int.TryParse(f.Element("Kolicina")?.Value, out var k) ? k : 0,
+                    SpisakVina = f.Element("SpisakVina")?.Elements("Vino")
+                        .Select(v => new Vino
+                        {
+                            ID_VINA = v.Element("ID_VINA")?.Value ?? string.Empty,
+                            Naziv = v.Element("Naziv")?.Value ?? string.Empty,
+                            Tip = Enum.TryParse<TipVina>(v.Element("Tip")?.Value, out var tip) ? tip : TipVina.STOLNO,
+                            Zapremina = double.Parse(v.Element("Zapremina")?.Value ?? "0"),
+                            SifraSerije = v.Element("SifraSerije")?.Value ?? string.Empty,
+                            IdLoze = v.Element("IdLoze")?.Value ?? string.Empty,
+                            DatumFlasiranja = DateTime.TryParse(v.Element("DatumFlasiranja")?.Value, out var df) ? df : DateTime.Now
+                        }).ToList() ?? new List<Vino>(),
+                    UkupanIznos = float.TryParse(f.Element("UkupanIznos")?.Value, out var ui) ? ui : 0
+
+
+                }).ToList() ?? new List<Faktura>();
+
             return tabele;
         }
 
@@ -141,6 +166,9 @@ namespace Database.BazaPodataka
                             )
                         )
                     ),
+
+
+
                     new XElement("VinoveLoze",
                         tabele.VinoveLoze.Select(vl =>
                             new XElement("VinovaLoza",
@@ -153,6 +181,9 @@ namespace Database.BazaPodataka
                             )
                         )
                     ),
+
+
+
                     new XElement("Vina",
                         tabele.Vina.Select(v =>
                             new XElement("Vino",
@@ -179,6 +210,9 @@ namespace Database.BazaPodataka
                        )
                      )
                   ),
+
+
+
                     new XElement("Podrumi",
                     tabele.Podrumi.Select(p =>
                         new XElement("Podrum",
@@ -186,12 +220,43 @@ namespace Database.BazaPodataka
                         new XElement("Naziv", p.Naziv),
                         new XElement("Temperatura", p.Temperatura),
                         new XElement("MaxPaleta", p.MaxPaleta)
-                        
-        )
-    )
-)
+
+                  )
+                 )
+                ),
+
+
+                      new XElement("Fakture",
+                     tabele.Fakture.Select(f =>
+                         new XElement("Faktura",
+                            new XElement("Id", f.Id),
+                            new XElement("DatumKreiranja", f.DatumKreiranja.ToString()),
+                            new XElement("TipProdaje", f.TipProdaje.ToString()),
+                            new XElement("NacinPlacanja", f.NacinPlacanja.ToString()),
+                            new XElement("Kolicina", f.Kolicina),
+                            new XElement("SpisakVina",
+                                f.SpisakVina.Select(v =>
+                                    new XElement("Vino",
+                                        new XElement("ID_VINA", v.ID_VINA),
+                                        new XElement("Naziv", v.Naziv),
+                                        new XElement("Tip", v.Tip),
+                                        new XElement("Zapremina", v.Zapremina),
+                                        new XElement("SifraSerije", v.SifraSerije),
+                                        new XElement("IdLoze", v.IdLoze),
+                                        new XElement("DatumFlasiranja", v.DatumFlasiranja.ToString())
+                                    )
+                                )
+                            ),
+
+
+                            new XElement("UkupanIznos", f.UkupanIznos)
+                       )
+                  )
                 )
+              )
             );
+              
+            
 
             doc.Save(_putanja);
         }

@@ -24,7 +24,7 @@ namespace Database.Repozitorijumi
 
 
 
-                if (!(PronadjiFakturuPoIDu(faktura.Id)))
+                if (!PronadjiFakturuPoIDu(faktura.Id))
                 {
 
 
@@ -50,7 +50,7 @@ namespace Database.Repozitorijumi
 
 
 
-        public Boolean PronadjiFakturuPoIDu(Guid Id)
+        public Boolean PronadjiFakturuPoIDu(string Id)
         {
             try
             {

@@ -10,7 +10,11 @@ namespace Domain.Repozitorijumi
     public interface IFakturaRepozitorijum
     {
         public Faktura DodajFakturu(Faktura faktura);
-        public Boolean PronadjiFakturuPoIDu(Guid Id);
+        public Boolean PronadjiFakturuPoIDu(String Id);
         public IEnumerable<Faktura> SveFakture();
+
+
+
+
     }
 }

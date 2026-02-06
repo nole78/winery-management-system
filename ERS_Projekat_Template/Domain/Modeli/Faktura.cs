@@ -12,10 +12,14 @@ namespace Domain.Modeli
 {
     public class Faktura
     {
-        public Guid Id { get;  set; }
+        public string Id { get;  set; }
         public TipProdaje TipProdaje { get;  set; }
-        public NacinPlacanja NacinPlacanja { get;  set; }
-        public List<StavkaFakture> Stavke { get; set; } = [];
+        public NacinPlacanja NacinPlacanja { get; set; }
+        
+        public List<Vino> SpisakVina { get; set; }
+
+        public int Kolicina { get; set; }   
+
         public float UkupanIznos { get; set; } = 0;
         public DateTime DatumKreiranja { get;  set; }
 
@@ -23,16 +27,17 @@ namespace Domain.Modeli
            
         }
 
-        public static Faktura Kreiraj(TipProdaje tipProdaje, NacinPlacanja nacinPlacanja, List<StavkaFakture> stavke)
+        public static Faktura Kreiraj(TipProdaje tipProdaje, NacinPlacanja nacinPlacanja, int Kolicina)
         {
             return new Faktura
             {
-                Id = Guid.NewGuid(),
+
                 TipProdaje = tipProdaje,
                 NacinPlacanja = nacinPlacanja,
-                Stavke = stavke,
-                UkupanIznos = stavke.Sum(s => s.JedinicnaCena * s.Kolicina),
-                DatumKreiranja = DateTime.UtcNow
+                Kolicina = Kolicina,
+                SpisakVina = new List<Vino>(),
+                UkupanIznos = 0,
+                DatumKreiranja = DateTime.Now
             };
         }
 

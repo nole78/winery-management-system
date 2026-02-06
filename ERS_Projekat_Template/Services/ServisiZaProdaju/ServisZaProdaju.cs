@@ -21,14 +21,13 @@ namespace Services.ServisiZaProdaju
         IServisZaSkladistenje servisZaSkladistenje;
         IVinoRepozitorijum vinoRepozitorijum;
 
-        public ServisZaProdaju(IVinoRepozitorijum vinoRepozitorijunm, IServisZaSkladistenje servisZaSkladistenje, IVinoRepozitorijum vinoRepo, IFakturaRepozitorijum fakturaRepo, ILoggerServis loggerServis, IServisZaProizvodnjuVina servisZaProizvodnju)
+        public ServisZaProdaju(IVinoRepozitorijum vinoRepozitorijum, IServisZaSkladistenje servisZaSkladistenje,  IFakturaRepozitorijum fakturaRepo, ILoggerServis loggerServis, IServisZaProizvodnjuVina servisZaProizvodnju)
         {
             this.fakturaRepo = fakturaRepo;
             this.loggerServis = loggerServis;
             this.servisZaProizvodnju = servisZaProizvodnju;
-            this.vinoRepo = vinoRepo;
             this.servisZaSkladistenje = servisZaSkladistenje;
-            this.vinoRepozitorijum = vinoRepozitorijunm;    
+            this.vinoRepozitorijum = vinoRepozitorijum;    
         }
 
 
@@ -86,28 +85,32 @@ namespace Services.ServisiZaProdaju
 
             var odabranaVina = vinaZaProdaju.Take(brojFlasa).ToList();
 
-            // NE NE NE TODO: OBRISIIIIII
-            var stavke = odabranaVina
-                .GroupBy(v => v.ID_VINA)
-                .Select(g => new StavkaFakture
-                {
-                    NazivVina = g.First().Naziv,
-                    JedinicnaCena = IzracunajCenu(g.First()), // now float
-                    Kolicina = g.Count()
-                })
-                .ToList();
 
-            // 7️⃣ Create Faktura (TipProdaje and NacinPlacanja can be defaulted or random)
-            var faktura = Faktura.Kreiraj(
-                TipProdaje.Restoranska,
-                NacinPlacanja.Gotovina,
-                stavke
-            );
 
-            // 8️⃣ Save Faktura
+
+            var faktura = Faktura.Kreiraj(TipProdaje.Restoranska, NacinPlacanja.Gotovina, odabranaVina.Count);
+
+            for (int i = 0; i< faktura.Kolicina; i++)
+            {
+               
+                    var vino = vinoRepozitorijum.PronadjiVinoPoID(odabranaVina[i].ID_VINA); 
+                    if (vino != null)
+                    {
+                        faktura.SpisakVina.Add(vino);
+                        faktura.UkupanIznos += IzracunajCenu(vino);
+                    }
+
+            }
+           
+
+
+            loggerServis.EvidentirajDogadjaj(TipEvidencije.INFO, $"Izvršena prodaja: {faktura.Kolicina} flaša, Ukupan iznos: {faktura.UkupanIznos} RSD.");
+
+
+
             fakturaRepo.DodajFakturu(faktura);
 
-            loggerServis.EvidentirajDogadjaj(TipEvidencije.INFO, $"Kreirana faktura {faktura.Id} sa {stavke.Count} stavki.");
+           
 
             return faktura;
         }
