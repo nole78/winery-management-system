@@ -53,7 +53,7 @@ namespace Services.ServisiZaProdaju
 
         public Faktura izvrsavanjeProdaje(int brojFlasa)
         {
-            if (brojFlasa <= 0)
+            /*if (brojFlasa <= 0)
             {
                 loggerServis.EvidentirajDogadjaj(TipEvidencije.ERROR, "Broj flaša mora biti veći od nule.");
                 return new Faktura();
@@ -87,7 +87,7 @@ namespace Services.ServisiZaProdaju
             var odabranaVina = vinaZaProdaju.Take(brojFlasa).ToList();
 
             // NE NE NE TODO: OBRISIIIIII
-            var stavke = odabranaVina
+            /*var stavke = odabranaVina
                 .GroupBy(v => v.ID_VINA)
                 .Select(g => new StavkaFakture
                 {
@@ -109,7 +109,8 @@ namespace Services.ServisiZaProdaju
 
             loggerServis.EvidentirajDogadjaj(TipEvidencije.INFO, $"Kreirana faktura {faktura.Id} sa {stavke.Count} stavki.");
 
-            return faktura;
+            return faktura;*/
+            return new Faktura();
         }
     }
 
