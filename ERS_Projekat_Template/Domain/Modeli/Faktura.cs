@@ -12,10 +12,10 @@ namespace Domain.Modeli
 {
     public class Faktura
     {
-        public Guid Id { get;  set; }
+        public string Id { get;  set; }
         public TipProdaje TipProdaje { get;  set; }
         public NacinPlacanja NacinPlacanja { get;  set; }
-        public List<StavkaFakture> Stavke { get; set; } = [];
+        public List<string> id_vina { get; set; } = new List<string>();
         public float UkupanIznos { get; set; } = 0;
         public DateTime DatumKreiranja { get;  set; }
 
@@ -23,19 +23,28 @@ namespace Domain.Modeli
            
         }
 
-        public static Faktura Kreiraj(TipProdaje tipProdaje, NacinPlacanja nacinPlacanja, List<StavkaFakture> stavke)
+        public static Faktura Kreiraj(TipProdaje tipProdaje, NacinPlacanja nacinPlacanja, List<string> stavke, float ukupan_iznos)
         {
             return new Faktura
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString(),
                 TipProdaje = tipProdaje,
                 NacinPlacanja = nacinPlacanja,
-                Stavke = stavke,
-                UkupanIznos = stavke.Sum(s => s.JedinicnaCena * s.Kolicina),
+                id_vina = stavke,
+                UkupanIznos = ukupan_iznos,
                 DatumKreiranja = DateTime.UtcNow
             };
         }
 
+        public string Header()
+        {
+            return $@"| {"ID",-10} | {"TIP PRODAJE",-20} | {"NACIN PLACANJA",-20} | {"UKUPAN IZNOS",-15}" +
+                   "\n--------------------------------------------------------------------------------------------------------------------\n";
+        }
 
+        public override string ToString()
+        {
+            return $@"| {Id,-10} | {TipProdaje,-20} | {NacinPlacanja,-20} | {UkupanIznos,-15}";
+        }
     }
 }

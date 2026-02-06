@@ -34,7 +34,16 @@ namespace Domain.Modeli
             DatumFlasiranja = df;
         }
 
-    
+        public string Header()
+        {
+            return $@"| {"ID",-10} | {"NAZIV",-20} | {"TIP",-20} | {"ZAPREMINA",-5} | {"SIFRA SERIJE", -20} | {"ID_LOZE", -5} | {"DATUM FLASIRANJA", -20}" +
+                   "\n--------------------------------------------------------------------------------------------------------------------\n";
+        }
+
+        public override string ToString()
+        {
+            return $@"| {ID_VINA,-10} | {Naziv,-20} | {Tip,-20} | {Zapremina,-5} | {SifraSerije,-20} | {IdLoze,-5} | {DatumFlasiranja,-20}";
+        }
 
     }
 }

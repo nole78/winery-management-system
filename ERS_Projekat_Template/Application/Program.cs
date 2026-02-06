@@ -67,7 +67,7 @@ namespace Loger_Bloger
             else
                 servisSkladistenja = new LokalniKelarSkladistenjeServis(loggerServis, pakovanjeServis, podrumRepozitorijum);
 
-            OpcijeMeni meni = new OpcijeMeni(); // TODO: Pass necessary dependencies
+            OpcijeMeni meni = new OpcijeMeni(fakturaRepozitorijum, vinoRepozitorijum, prijavljen); // TODO: Pass necessary dependencies
             meni.PrikaziMeni();
         }
     }
