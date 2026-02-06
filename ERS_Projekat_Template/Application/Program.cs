@@ -68,7 +68,7 @@ namespace Loger_Bloger
             else
                 servisSkladistenja = new LokalniKelarSkladistenjeServis(loggerServis, pakovanjeServis, podrumRepozitorijum);
 
-            IServisZaProdaju servisProdaje = new ServisZaProdaju(vinoRepozitorijum, servisSkladistenja, fakturaRepozitorijum, loggerServis, servisZaProizvodnjuVina);
+            IServisZaProdaju servisProdaje = new ServisZaProdaju(vinoRepozitorijum, servisSkladistenja, fakturaRepozitorijum, loggerServis);
             OpcijeMeni meni = new OpcijeMeni(fakturaRepozitorijum, vinoRepozitorijum, prijavljen, servisProdaje); 
 
             meni.PrikaziMeni();

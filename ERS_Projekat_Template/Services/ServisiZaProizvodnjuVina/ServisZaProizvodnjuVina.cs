@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Repozitorijumi;
-using Domain.PomocneMetode;
+using Domain.PomocneMetode.NasumicneVrednosti;
 
 namespace Services.ServisiZaProizvodnjuVina
 {
@@ -76,7 +76,7 @@ namespace Services.ServisiZaProizvodnjuVina
             if (brojFlasa <= 0)
             {
                 loger.EvidentirajDogadjaj(TipEvidencije.ERROR, "Broj flaša mora biti veći od nule.");
-                throw new ArgumentException(nameof(brojFlasa));
+                return [];
 
             }
 
@@ -90,10 +90,24 @@ namespace Services.ServisiZaProizvodnjuVina
         
             var obraneLoze = vinogradarstvoServis.OberiLoze(nazivLoze, potrebnoLoza).ToList();
 
-            if (obraneLoze.Count < potrebnoLoza)
+            while (obraneLoze.Count < potrebnoLoza)
             {
-                loger.EvidentirajDogadjaj(TipEvidencije.ERROR, "Nema dovoljno loza za proizvodnju vina.");
-                return [];
+                VinovaLoza loza = vinogradarstvoServis.PosadiNovuLozu(NasumicnaLoza.GenerisiNasumicnaLoza());
+                if(loza.Naziv == string.Empty)
+                {
+                    loger.EvidentirajDogadjaj(TipEvidencije.ERROR, "Neuspesno sadjenje nove loze.");
+                    return [];
+                }
+
+                if (loza.NivoSecera > 24)
+                    loza = vinogradarstvoServis.PromeniNivoSecera(loza);
+                
+                if(loza.Naziv == string.Empty)
+                {
+                    loger.EvidentirajDogadjaj(TipEvidencije.ERROR, "Neuspesna regulacija nivoa secera u lozi.");
+                    return [];
+                }
+                obraneLoze.Add(loza);
             }
             
             return PokreniFermentaciju(tipVina, brojFlasa, zapreminaFlase);

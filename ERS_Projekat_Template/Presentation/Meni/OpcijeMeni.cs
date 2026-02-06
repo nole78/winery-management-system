@@ -43,9 +43,19 @@ namespace Presentation.Meni
                 {
                     case "1":
 
-                       
-                        int randomKolicina = new Random().Next(1, 21); 
-                        var faktura = prodajaServis.izvrsavanjeProdaje(randomKolicina);
+                        int kolicina = 0;
+                        Console.WriteLine("Unesite kolicinu flasa za prodaju");
+                        do
+                        {
+                            if(!int.TryParse(Console.ReadLine(),out kolicina))
+                            {
+                                Console.WriteLine("Unesite validan broj!");
+                                continue;
+                            }
+
+                        }
+                        while (kolicina <= 0);
+                        var faktura = prodajaServis.izvrsavanjeProdaje(kolicina);
                         Console.WriteLine($"Prodato je {faktura.Kolicina}.");
                         
                         break;

@@ -36,7 +36,7 @@ namespace Services.ServisZaSkladistenje
                 }
 
                 List<Paleta> isporucenePalete = [];
-                VinskiPodrum kelar = podrumRepozitorijum.VratiPodrum();
+                VinskiPodrum kelar = podrumRepozitorijum.VratiPodrum(brojPaleta);
                 if (kelar.Naziv == string.Empty)
                 {
                     loggerServis.EvidentirajDogadjaj(TipEvidencije.ERROR, "Neuspešna isporuka paleta iz lokalnog kelara - ne postoji kelar.");

@@ -1,4 +1,4 @@
-﻿namespace Domain.PomocneMetode.Loza
+﻿namespace Domain.PomocneMetode.NasumicneVrednosti
 {
     public static class NasumicanRegionUzgoja
     {

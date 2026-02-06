@@ -10,7 +10,6 @@ namespace Domain.Servisi
 {
     public interface IServisZaProdaju
     {
-        public float IzracunajCenu(Vino vino);
         public Faktura izvrsavanjeProdaje(int brojFlasa);
 
         public List<Faktura> PregledSvihFaktura();

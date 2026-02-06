@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.PomocneMetode
+namespace Domain.PomocneMetode.NasumicneVrednosti
 {
     public static class NasumicnaLoza
     {

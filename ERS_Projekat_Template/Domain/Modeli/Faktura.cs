@@ -12,34 +12,26 @@ namespace Domain.Modeli
 {
     public class Faktura
     {
-        public string Id { get;  set; }
-        public TipProdaje TipProdaje { get;  set; }
+        public string Id { get; set; } = "";
+        public TipProdaje TipProdaje { get; set; } = 0;
 
-        public NacinPlacanja NacinPlacanja { get;  set; }
+        public NacinPlacanja NacinPlacanja { get; set; } = 0;
         public List<string> id_vina { get; set; } = new List<string>();
-        public int Kolicina { get; set; }
+        public int Kolicina { get; set; } = 0;
 
         public float UkupanIznos { get; set; } = 0;
-        public DateTime DatumKreiranja { get;  set; }
+        public DateTime DatumKreiranja { get;  set; } = DateTime.UtcNow;
 
-        public Faktura() {
-           
-        }
-
-
-        public static Faktura Kreiraj(TipProdaje tipProdaje, NacinPlacanja nacinPlacanja, List<string> stavke, float ukupan_iznos, int ukupno_flasa)
+        public Faktura() { }
+        public Faktura(TipProdaje tipProdaje, NacinPlacanja nacinPlacanja, List<string> stavke, float ukupan_iznos, int ukupno_flasa)
         {
-            return new Faktura
-            {
-                Id = Guid.NewGuid().ToString(),
-                TipProdaje = tipProdaje,
-                NacinPlacanja = nacinPlacanja,
-                id_vina = stavke,
-                UkupanIznos = ukupan_iznos,
-                DatumKreiranja = DateTime.UtcNow,
-                Kolicina = ukupno_flasa
-
-            };
+            Id = Guid.NewGuid().ToString();
+            TipProdaje = tipProdaje;
+            NacinPlacanja = nacinPlacanja;
+            id_vina = stavke;
+            UkupanIznos = ukupan_iznos;
+            DatumKreiranja = DateTime.UtcNow;
+            Kolicina = ukupno_flasa;
         }
 
         public string Header()

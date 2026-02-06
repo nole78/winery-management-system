@@ -2,9 +2,8 @@
 using Domain.Servisi;
 using Domain.Enumeracije;
 using Domain.Repozitorijumi;
-using Domain.PomocneMetode.Loza;
 using Domain.Konstante.NivoSeceraLoze;
-using Domain.PomocneMetode;
+using Domain.PomocneMetode.NasumicneVrednosti;
 
 namespace Services.VinogradarstvoServis
 {

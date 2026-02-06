@@ -21,9 +21,6 @@ namespace Database.Repozitorijumi
             try
             {
 
-
-
-
                 if (!PronadjiFakturuPoIDu(faktura.Id))
                 {
 

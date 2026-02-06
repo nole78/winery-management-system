@@ -103,18 +103,18 @@ namespace Database.Repozitorijumi
             }
         }
 
-        public VinskiPodrum VratiPodrum()
+        public VinskiPodrum VratiPodrum(int brPaleta)
         {
             try
             {
                 var podrumi = PregledSvihPodruma();
                 VinskiPodrum podrum = new VinskiPodrum();
                 if (podrumi.Count() > 0)
-                    podrum = podrumi.First(podrumi => podrumi.MaxPaleta > 0);
+                    podrum = podrumi.FirstOrDefault(podrumi => podrumi.MaxPaleta >= brPaleta) ?? new VinskiPodrum();
                 if (podrum.Naziv != string.Empty)
                     return podrum;
                 else
-                    return DodajPodrum(new VinskiPodrum { MaxPaleta = 10, Naziv = "Lokalni Kelar", Temperatura = 12 });
+                    return DodajPodrum(new VinskiPodrum { MaxPaleta = brPaleta + 10, Naziv = "Lokalni Kelar", Temperatura = 12 });
             }
             catch
             {
