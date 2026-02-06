@@ -25,8 +25,9 @@ namespace Domain.Modeli
 
         public Vino() {}
 
-        public Vino(string naziv, TipVina t, double zapremina, string idloze, DateTime df)
+        public Vino(string id, string naziv, TipVina t, double zapremina, string idloze, DateTime df)
         {
+            ID_VINA = id;
             Naziv = naziv;
             Tip = t;
             Zapremina = zapremina;
