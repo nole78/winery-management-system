@@ -82,7 +82,7 @@ namespace Tests.Services.ServisZaSkladistenje
                 .Setup(p => p.SlanjePalete(It.IsAny<string>()))
                 .Returns(() => new Paleta((brojac++).ToString(), "kelar", "123", StatusPalete.OTPREMLJENA));
             _podrumRepozitorijum
-                .Setup(p => p.VratiPodrum())
+                .Setup(p => p.VratiPodrum(trazeniBrojPaleta))
                 .Returns(new VinskiPodrum { Id = "123", Naziv = "kelar", Temperatura = 12, MaxPaleta = 100 });
 
             // Act
