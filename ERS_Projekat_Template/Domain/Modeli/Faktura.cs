@@ -14,8 +14,11 @@ namespace Domain.Modeli
     {
         public string Id { get;  set; }
         public TipProdaje TipProdaje { get;  set; }
+
         public NacinPlacanja NacinPlacanja { get;  set; }
         public List<string> id_vina { get; set; } = new List<string>();
+        public int Kolicina { get; set; }
+
         public float UkupanIznos { get; set; } = 0;
         public DateTime DatumKreiranja { get;  set; }
 
@@ -23,7 +26,8 @@ namespace Domain.Modeli
            
         }
 
-        public static Faktura Kreiraj(TipProdaje tipProdaje, NacinPlacanja nacinPlacanja, List<string> stavke, float ukupan_iznos)
+
+        public static Faktura Kreiraj(TipProdaje tipProdaje, NacinPlacanja nacinPlacanja, List<string> stavke, float ukupan_iznos, int ukupno_flasa)
         {
             return new Faktura
             {
@@ -32,7 +36,9 @@ namespace Domain.Modeli
                 NacinPlacanja = nacinPlacanja,
                 id_vina = stavke,
                 UkupanIznos = ukupan_iznos,
-                DatumKreiranja = DateTime.UtcNow
+                DatumKreiranja = DateTime.UtcNow,
+                Kolicina = ukupno_flasa
+
             };
         }
 

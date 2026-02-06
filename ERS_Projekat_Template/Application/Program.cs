@@ -13,6 +13,7 @@ using Services.VinogradarstvoServis;
 using Services.ServisiZaProizvodnjuVina;
 using Services.PakovanjeServisi;
 using Services.ServisZaSkladistenje;
+using Services.ServisiZaProdaju;
 
 namespace Loger_Bloger
 {
@@ -67,7 +68,9 @@ namespace Loger_Bloger
             else
                 servisSkladistenja = new LokalniKelarSkladistenjeServis(loggerServis, pakovanjeServis, podrumRepozitorijum);
 
-            OpcijeMeni meni = new OpcijeMeni(fakturaRepozitorijum, vinoRepozitorijum, prijavljen); // TODO: Pass necessary dependencies
+            IServisZaProdaju servisProdaje = new ServisZaProdaju(vinoRepozitorijum, servisSkladistenja, fakturaRepozitorijum, loggerServis, servisZaProizvodnjuVina);
+            OpcijeMeni meni = new OpcijeMeni(fakturaRepozitorijum, vinoRepozitorijum, prijavljen, servisProdaje); 
+
             meni.PrikaziMeni();
         }
     }

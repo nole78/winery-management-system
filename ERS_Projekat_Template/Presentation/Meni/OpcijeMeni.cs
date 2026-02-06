@@ -1,21 +1,26 @@
 ﻿using Domain.Modeli;
+using Services.ServisiZaProdaju;
 using Domain.Enumeracije;
 using Domain.Repozitorijumi;
+using Domain.Servisi;
 
 namespace Presentation.Meni
 {
     public class OpcijeMeni
     {
+
         private readonly IFakturaRepozitorijum fakturaRepozitorijum;
         private readonly IVinoRepozitorijum vinoRepozitorijum;
         private readonly Korisnik korisnik;
-
-        public OpcijeMeni(IFakturaRepozitorijum faktureRepo, IVinoRepozitorijum vinoRepo, Korisnik kor)
+        private readonly IServisZaProdaju prodajaServis;
+        public OpcijeMeni(IFakturaRepozitorijum faktureRepo, IVinoRepozitorijum vinoRepo, Korisnik kor, IServisZaProdaju prodajaS)
         {
             fakturaRepozitorijum = faktureRepo;
             vinoRepozitorijum = vinoRepo;
             korisnik = kor;
+            prodajaServis = prodajaS;
         }
+
 
         public void PrikaziMeni()
         {
@@ -27,7 +32,9 @@ namespace Presentation.Meni
                 Console.WriteLine("\n============================================ MENI ===========================================");
                 Console.WriteLine();
 
+
                 Console.WriteLine("1. Prodaja vina\n2. Pregled faktura(GLAVNI ENOLOG)\n3. Odjavi se\n"); // kada budu dodate ostale funkcionalnosti prebaciti ovo na kraj
+
                 Console.Write("Unesite redni broj opcije koju birate: ");
 
                 string? izbor = Console.ReadLine();
@@ -35,10 +42,15 @@ namespace Presentation.Meni
                 switch (izbor)
                 {
                     case "1":
-                    {
-                        //TO-DO
+
+                       
+                        int randomKolicina = new Random().Next(1, 21); 
+                        var faktura = prodajaServis.izvrsavanjeProdaje(randomKolicina);
+                        Console.WriteLine($"Prodato je {faktura.Kolicina}.");
+                        
                         break;
-                    }
+                   
+                    
                     case "2":
                     {
                         if(korisnik.Uloga != TipKorisnika.GLAVNI_ENOLOG)
@@ -99,6 +111,9 @@ namespace Presentation.Meni
             Console.ReadKey();
             Console.Clear();
         }
+
+
+       
     }
 
 }
