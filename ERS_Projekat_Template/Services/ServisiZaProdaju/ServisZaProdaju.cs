@@ -84,11 +84,13 @@ namespace Services.ServisiZaProdaju
 
 
             var odabranaVina = vinaZaProdaju.Take(brojFlasa).ToList();
+            var odabranaVinaIDs = odabranaVina.Select(v => v.ID_VINA).ToList();
+         
 
 
 
 
-            var faktura = Faktura.Kreiraj(TipProdaje.Restoranska, NacinPlacanja.Gotovina, odabranaVina.Count);
+            var faktura = Faktura.Kreiraj(TipProdaje.Restoranska, NacinPlacanja.Gotovina, odabranaVinaIDs, 0, brojFlasa);
 
             for (int i = 0; i< faktura.Kolicina; i++)
             {
@@ -96,7 +98,7 @@ namespace Services.ServisiZaProdaju
                     var vino = vinoRepozitorijum.PronadjiVinoPoID(odabranaVina[i].ID_VINA); 
                     if (vino != null)
                     {
-                        faktura.SpisakVina.Add(vino);
+                        faktura.id_vina.Add(vino.ID_VINA);
                         faktura.UkupanIznos += IzracunajCenu(vino);
                     }
 
@@ -113,6 +115,7 @@ namespace Services.ServisiZaProdaju
            
 
             return faktura;
+            
         }
     }
 

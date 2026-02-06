@@ -17,13 +17,13 @@ using System.Xml;
 namespace Tests.Services.ServisZaSkladistenje
 {
     [TestFixture]
-    public class ServisZaSkladistenjeTest
+    public class ServisZaSkladistenjeTests
     {
         private Mock<IPodrumRepozitorijum> _podrumRepozitorijum;
         private Mock<ILoggerServis> _loggerServis;
         private Mock<IPakovanjeServis> _pakovanjeServis;
         private VinskiPodrumSkladistenjeServis _skladistenjeServis;
-        public ServisZaSkladistenjeTest()
+        public ServisZaSkladistenjeTests()
         {
             // Inicijalizacija mock objekata
             _podrumRepozitorijum = new Mock<IPodrumRepozitorijum>();

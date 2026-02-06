@@ -25,8 +25,9 @@ namespace Domain.Modeli
 
         public Vino() {}
 
-        public Vino(string naziv, TipVina t, double zapremina, string idloze, DateTime df)
+        public Vino(string id, string naziv, TipVina t, double zapremina, string idloze, DateTime df)
         {
+            ID_VINA = id;
             Naziv = naziv;
             Tip = t;
             Zapremina = zapremina;
@@ -34,7 +35,16 @@ namespace Domain.Modeli
             DatumFlasiranja = df;
         }
 
-    
+        public string Header()
+        {
+            return $@"| {"ID",-10} | {"NAZIV",-20} | {"TIP",-20} | {"ZAPREMINA",-5} | {"SIFRA SERIJE", -20} | {"ID_LOZE", -5} | {"DATUM FLASIRANJA", -20}" +
+                   "\n--------------------------------------------------------------------------------------------------------------------\n";
+        }
+
+        public override string ToString()
+        {
+            return $@"| {ID_VINA,-10} | {Naziv,-20} | {Tip,-20} | {Zapremina,-5} | {SifraSerije,-20} | {IdLoze,-5} | {DatumFlasiranja,-20}";
+        }
 
     }
 }
