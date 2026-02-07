@@ -29,8 +29,6 @@ namespace Services.PakovanjeServisi
             try
             {
                 List<Vino> vina = servisZaProizvodnju.DobaviVina(BROJ_FLASA);
-                IEnumerable<Paleta> palete = paletaRepozitorijum.PregledSvihPaleta();
-                
                 List<string> IDvina = new List<string>();
 
                 foreach(Vino v in vina)
@@ -71,24 +69,19 @@ namespace Services.PakovanjeServisi
                     {
                         paleta.Status = StatusPalete.OTPREMLJENA;
                         paleta.IDPodruma = IDPodruma;
-                        Paleta p = paletaRepozitorijum.DodajPaletu(paleta);
-
+                        bool uspeh = paletaRepozitorijum.AzurirajPaletu(paleta);
+                        if(!uspeh)
+                        {
+                            loggerServis.EvidentirajDogadjaj(TipEvidencije.ERROR, "Paleta neuspesno ažurirana.");
+                            return new Paleta();
+                        }
                         if(!podrumRepozitorijum.DodajPaletuUPodrum(IDPodruma))
                         {
-                            loggerServis.EvidentirajDogadjaj(TipEvidencije.INFO, "Paleta nije otpremljena.");
+                            loggerServis.EvidentirajDogadjaj(TipEvidencije.INFO, "Paleta nije otpremljena u podrum.");
                             return new Paleta();
-                        }
-
-                        if (p.SifraPalete != string.Empty)
-                        {
-                            loggerServis.EvidentirajDogadjaj(TipEvidencije.INFO, "Paleta uspešno otpremljena.");
-                            return paleta;
                         }
                         else
-                        {
-                            loggerServis.EvidentirajDogadjaj(TipEvidencije.ERROR, "Paleta nije otpremljena.");
-                            return new Paleta();
-                        }
+                            return paleta;
                     }
                     else
                     {
