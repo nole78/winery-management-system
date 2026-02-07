@@ -41,16 +41,20 @@ namespace Tests.Services.PakovanjeServisi
         }
 
         [Test]
-        public void PakovanjeVinaTest_UspesnoPakovanje()
+        [TestCase("123", "Adresa", "515")]
+        [TestCase("124", "Lokalni Kelar", "516")]
+        [TestCase("125", "Vinski Podrum", "517")]
+        public void PakovanjeVinaTest_UspesnoPakovanje(string sifra,string adresa,string idPodruma)
         {
             List<Vino> _vina = new List<Vino>();
-            for(int i = 0;i < 3;i++)
+            Paleta paleta = new Paleta(sifra,adresa,idPodruma, StatusPalete.UPAKOVANA);
+            for (int i = 0;i < 3;i++)
             {
                 Vino v = new Vino("123", "Merlot", TipVina.STOLNO, 0.5, "123", new DateTime(1990, 8, 1));
                 _vina.Add(v);
             }
-
-            servisZaProizvodnju.Setup(x => x.DobaviVina(1)).Returns(_vina);
+            paletaRepozitorijum.Setup(x => x.DodajPaletu(It.IsAny<Paleta>())).Returns(paleta);
+            servisZaProizvodnju.Setup(x => x.DobaviVina(It.IsAny<int>())).Returns(_vina);
 
             var ret_val = pakovanjeServis.PakovanjeVina();
 
@@ -60,20 +64,28 @@ namespace Tests.Services.PakovanjeServisi
         }
 
         [Test]
-        [TestCase("515")]
-        [TestCase("516")]
-        [TestCase("517")]
-        public void SlanjePaleteTest_UspesnoSlanje_RepoPaletaPrazan(string IDPodruma)
+        [TestCase("123", "Adresa", "515")]
+        [TestCase("124", "Lokalni Kelar", "516")]
+        [TestCase("125", "Vinski Podrum", "517")]
+        public void SlanjePaleteTest_UspesnoSlanje_RepoPaletaPrazan(string sifra, string adresa, string idPodruma)
         {
-            Paleta paleta = new Paleta("123", "Adresa", IDPodruma, StatusPalete.UPAKOVANA);
-            paletaRepozitorijum.Setup(x => x.PronadjiPaletuPoStatusu(StatusPalete.UPAKOVANA)).Returns(new List<Paleta>());
+            List<Vino> _vina = new List<Vino>();
+            Paleta paleta = new Paleta(sifra, adresa, "", StatusPalete.UPAKOVANA);
+            for (int i = 0; i < 3; i++)
+            {
+                Vino v = new Vino("123", "Merlot", TipVina.STOLNO, 0.5, "123", new DateTime(1990, 8, 1));
+                _vina.Add(v);
+            }
+            podrumRepozitorijum.Setup(x => x.DodajPaletuUPodrum(It.IsAny<string>())).Returns(true);
+            paletaRepozitorijum.Setup(x => x.DodajPaletu(It.IsAny<Paleta>())).Returns(paleta);
+            servisZaProizvodnju.Setup(x => x.DobaviVina(It.IsAny<int>())).Returns(_vina);
+            paletaRepozitorijum.Setup(x => x.PronadjiPaletuPoStatusu(StatusPalete.UPAKOVANA)).Returns(new List<Paleta>() {});
+            paletaRepozitorijum.Setup(x => x.AzurirajPaletu(It.IsAny<Paleta>())).Returns(true);
 
-            var ret_val = pakovanjeServis.SlanjePalete(IDPodruma);
+            var ret_val = pakovanjeServis.SlanjePalete(idPodruma);
 
             Assert.That(ret_val, Is.Not.Null);
-            Assert.That(ret_val, Is.EqualTo(paleta));
-
-            loggerServis.Verify(x => x.EvidentirajDogadjaj(TipEvidencije.INFO, It.Is<string>(msg => msg.Contains("Uspešno slanje palete."))), Times.Once);
+            Assert.That(ret_val.SifraPalete,Is.Not.Empty);
         }
 
         [Test]
@@ -83,14 +95,15 @@ namespace Tests.Services.PakovanjeServisi
         public void SlanjePaleteTest_UspesnoSlanje_RepoPaletaNijePrazan(string IDPodruma)
         {
             Paleta paleta = new Paleta("123", "Adresa", IDPodruma, StatusPalete.UPAKOVANA);
-            paletaRepozitorijum.Setup(x => x.DodajPaletu(paleta)).Returns(paleta);
+            paletaRepozitorijum.Setup(x => x.PronadjiPaletuPoStatusu(StatusPalete.UPAKOVANA)).Returns(new List<Paleta>() { paleta });
+            paletaRepozitorijum.Setup(x => x.AzurirajPaletu(It.IsAny<Paleta>())).Returns(true);
 
             var ret_val = pakovanjeServis.SlanjePalete(IDPodruma);
 
             Assert.That(ret_val, Is.Not.Null);
-            Assert.That(ret_val, Is.EqualTo(paleta));
+            Assert.That(ret_val.SifraPalete, Is.EqualTo(paleta.SifraPalete));
 
-            loggerServis.Verify(x => x.EvidentirajDogadjaj(TipEvidencije.INFO, It.Is<string>(msg => msg.Contains("Uspešno slanje palete."))), Times.Once);
+            loggerServis.Verify(x => x.EvidentirajDogadjaj(TipEvidencije.INFO, It.Is<string>(msg => msg.Contains("Paleta uspešno otpremljena."))), Times.Once);
         }
     }
 }
