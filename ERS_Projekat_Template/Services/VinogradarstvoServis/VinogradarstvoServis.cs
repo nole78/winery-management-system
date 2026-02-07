@@ -38,11 +38,8 @@ namespace Services.VinogradarstvoServis
                 novaLoza.Zrelost = FazaZrelosti.POSADJENA;
 
                 loggerServis.EvidentirajDogadjaj(TipEvidencije.INFO, $"Posadjena je nova loza - ID : {novaLoza.Id}, Naziv : {novaLoza.Naziv}, Nivo secera : {novaLoza.NivoSecera}, Region uzgoja : {novaLoza.RegionUzgoja}, Godina sadnje : {novaLoza.GodSadnje}.");
-
                 VinovaLoza dodataLoza = lozeRepozitorijum.DodajLozu(novaLoza);
-
                 return dodataLoza;
-
             }
             catch
             {
@@ -79,11 +76,9 @@ namespace Services.VinogradarstvoServis
 
         public IEnumerable<VinovaLoza> OberiLoze(string naziv, int kolicina)
         {
-
             List<VinovaLoza> loze = lozeRepozitorijum.PregledLozaPoNazivu(naziv).ToList();
             List<VinovaLoza> obraneLoze = [];
             int spremnih = 0;
-
             try
             {
                 foreach (VinovaLoza vl in loze)

@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Repozitorijumi;
+using Domain.Konstante;
+using Domain.PomocneMetode;
 using Domain.PomocneMetode.NasumicneVrednosti;
 
 namespace Services.ServisiZaProizvodnjuVina
@@ -15,12 +17,8 @@ namespace Services.ServisiZaProizvodnjuVina
 
     public class ServisZaProizvodnjuVina : IServisZaProizvodnjuVina
     {
-        private const double LITARA_PO_LOZI = 1.2;
-
         IVinoRepozitorijum vinoRepozitorijum;
-
-
-        private readonly IVinogradarstvoServis vinogradarstvoServis;
+        IVinogradarstvoServis vinogradarstvoServis;
         ILoggerServis loger;
 
         public ServisZaProizvodnjuVina(IVinoRepozitorijum vinoRepozitorijum, IVinogradarstvoServis vinogradarstvoServis, ILoggerServis loger)
@@ -64,13 +62,6 @@ namespace Services.ServisiZaProizvodnjuVina
 
             return vina;
         }
-
-        private int IzracunajPotrebnuKolicinuLoza(int brojFlasa, double zapreminaFlase)
-        {
-            double ukupno = brojFlasa * zapreminaFlase;
-            return (int)Math.Ceiling(ukupno / LITARA_PO_LOZI);
-        }
-
         public List<Vino> DobaviVina(int brojFlasa)
         {
             if (brojFlasa <= 0)
@@ -85,7 +76,7 @@ namespace Services.ServisiZaProizvodnjuVina
             TipVina tipVina = NasumicanTipVina.GenerisiNasumicanTipVina();
 
 
-            int potrebnoLoza = IzracunajPotrebnuKolicinuLoza(brojFlasa, zapreminaFlase);
+            int potrebnoLoza = PotrebnaKolicinaLoza.IzracunajPotrebnuKolicinuLoza(brojFlasa, zapreminaFlase);
 
         
             var obraneLoze = vinogradarstvoServis.OberiLoze(nazivLoze, potrebnoLoza).ToList();

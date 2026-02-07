@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.PomocneMetode;
+using Domain.Konstante;
 
 namespace Services.ServisiZaProdaju
 {
@@ -32,7 +33,7 @@ namespace Services.ServisiZaProdaju
             return fakturaRepo.SveFakture().ToList();
         }
  
-        public Faktura izvrsavanjeProdaje(int brojFlasa)
+        public Faktura IzvrsavanjeProdaje(int brojFlasa)
         {
             if (brojFlasa <= 0)
             {
@@ -40,7 +41,7 @@ namespace Services.ServisiZaProdaju
                 return new Faktura();
             }
 
-            int brojPaleta = (int)Math.Ceiling((double)brojFlasa / 12);
+            int brojPaleta = (int)Math.Ceiling((double)brojFlasa / BrojVinaPoPaleti.KOLICINA_VINA_PO_PALETI);
 
             
             var palete = servisZaSkladistenje.IsporukaPalete(brojPaleta);
@@ -60,8 +61,6 @@ namespace Services.ServisiZaProdaju
                         vinaZaProdaju.Add(vino);
                 }
             }
-
-
             var odabranaVina = vinaZaProdaju.Take(brojFlasa).ToList();
             var odabranaVinaIDs = odabranaVina.Select(v => v.ID_VINA).ToList();
             var faktura = new Faktura(TipProdaje.Restoranska, NacinPlacanja.Gotovina, odabranaVinaIDs, 0, brojFlasa);
@@ -76,17 +75,13 @@ namespace Services.ServisiZaProdaju
                     }
 
             }
-           
-
-
             loggerServis.EvidentirajDogadjaj(TipEvidencije.INFO, $"Izvršena prodaja: {faktura.Kolicina} flaša, Ukupan iznos: {faktura.UkupanIznos} RSD.");
-
-
-
-            fakturaRepo.DodajFakturu(faktura);
-
-           
-
+            faktura = fakturaRepo.DodajFakturu(faktura);
+            if(faktura.Equals(new Faktura()))
+            {
+                loggerServis.EvidentirajDogadjaj(TipEvidencije.ERROR, "Došlo je do greške prilikom dodavanja fakture u repozitorijum.");
+                return new Faktura();
+            }
             return faktura;
             
         }

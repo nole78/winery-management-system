@@ -55,7 +55,7 @@ namespace Presentation.Meni
 
                         }
                         while (kolicina <= 0);
-                        var faktura = prodajaServis.izvrsavanjeProdaje(kolicina);
+                        var faktura = prodajaServis.IzvrsavanjeProdaje(kolicina);
                         Console.WriteLine($"Prodato je {faktura.Kolicina}.");
                         
                         break;

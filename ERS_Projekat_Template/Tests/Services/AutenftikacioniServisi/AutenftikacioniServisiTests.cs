@@ -200,7 +200,10 @@ namespace Tests.Services.AutenftikacioniServisi
             // Čišćenje resursa nakon svakog testa
             _korisniciRepozitorijum.Reset();
             _loggerServis.Reset();
-            _autentifikacioniServis = null;
+            _autentifikacioniServis = new AutentifikacioniServis(
+                _korisniciRepozitorijum.Object,
+                _loggerServis.Object
+            );
         }
     }
 }

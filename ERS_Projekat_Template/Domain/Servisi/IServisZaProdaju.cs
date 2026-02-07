@@ -10,7 +10,7 @@ namespace Domain.Servisi
 {
     public interface IServisZaProdaju
     {
-        public Faktura izvrsavanjeProdaje(int brojFlasa);
+        public Faktura IzvrsavanjeProdaje(int brojFlasa);
 
         public List<Faktura> PregledSvihFaktura();
 

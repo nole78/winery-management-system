@@ -34,6 +34,11 @@ namespace Services.ServisZaSkladistenje
                     loggerServis.EvidentirajDogadjaj(TipEvidencije.ERROR, $"Maksimalan broj paleta koji se moze dostaviti iz lokalnog kelara je {MAKS_PALETA} - trazeno: {brojPaleta}.");
                     return [];
                 }
+                else if (brojPaleta <= 0)
+                {
+                    loggerServis.EvidentirajDogadjaj(TipEvidencije.ERROR, "Nevalidan broj paleta trazen.");
+                    return [];
+                }
 
                 List<Paleta> isporucenePalete = [];
                 VinskiPodrum kelar = podrumRepozitorijum.VratiPodrum(brojPaleta);

@@ -152,7 +152,7 @@ namespace Tests.Services.VinogradarstvoServisi
             // Čišćenje resursa nakon svakog testa
             _vinovaLozaRepozitorijum.Reset();
             _loggerServis.Reset();
-            _vinogradarstvoServis = null;
+            _vinogradarstvoServis = new VinogradarstvoServis(_vinovaLozaRepozitorijum.Object, _loggerServis.Object);
         }
     }
 }

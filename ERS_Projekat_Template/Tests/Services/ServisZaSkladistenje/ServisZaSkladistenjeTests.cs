@@ -12,6 +12,7 @@ using Domain.Enumeracije;
 using Domain.Konstante;
 using Domain.Servisi;
 using System.Xml;
+using Services.LoggerServisi;
 
 
 namespace Tests.Services.ServisZaSkladistenje
@@ -54,14 +55,33 @@ namespace Tests.Services.ServisZaSkladistenje
         }
 
         #region IsporukaPalete Tests
+        [Test]
+        [TestCase(0)]
+        [TestCase(-1)]
+        [TestCase(-100)]
+        public void IsporukaPaleta_NevalidanBrojPaleta_VracaPraznuListu(int brPaleta)
+        {
+            // Act
+            var rezultat = _skladistenjeServis.IsporukaPalete(brPaleta);
+            // Assert
+            Assert.That(rezultat, Is.Empty);
+            _loggerServis.Verify(
+                logger => logger.EvidentirajDogadjaj(
+                TipEvidencije.ERROR,
+                    It.Is<string>(s => s.Contains("Nevalidan broj paleta trazen."))
+                ),
+                Times.Once
+            );
+        }
 
         [Test]
-        public void IsporukaPalete_BrojPaletaVeciOdMaksimuma_VracaPraznuListu()
+        [TestCase(100)]
+        [TestCase(6)]
+        [TestCase(10)]
+        public void IsporukaPalete_BrojPaletaVeciOdMaksimuma_VracaPraznuListu(int brPaleta)
         {
-            // Arrange
-            int trazeniBrojPaleta = IsporukaBrojPaletaKonstante.VINSKI_PODRUM_MAKS_BROJ_PALETA + 1;
             // Act
-            var rezultat = _skladistenjeServis.IsporukaPalete(trazeniBrojPaleta);
+            var rezultat = _skladistenjeServis.IsporukaPalete(brPaleta);
             // Assert
             Assert.That(rezultat, Is.Empty);
             _loggerServis.Verify(
@@ -73,22 +93,24 @@ namespace Tests.Services.ServisZaSkladistenje
             );
         }
         [Test]
-        public void IsporukaPaleta_BrojPaletaManjiOdMaksimuma_VracaListuPaleta()
+        [TestCase("kelar1","kelar1",StatusPalete.OTPREMLJENA,12,100,3)]
+        [TestCase("kelar2", "kelar3", StatusPalete.OTPREMLJENA, 26, 10,5)]
+        [TestCase("kelar3", "kelar3", StatusPalete.OTPREMLJENA, 3, 8,1)]
+        public void IsporukaPaleta_BrojPaletaManjiOdMaksimuma_VracaListuPaleta(string nazivKelar,string idKelar,StatusPalete status,int temperatura,int maxPaleta,int brPaleta)
         {
             // Arrange
-            int trazeniBrojPaleta = IsporukaBrojPaletaKonstante.VINSKI_PODRUM_MAKS_BROJ_PALETA - 1;
             int brojac = 1;
             _pakovanjeServis
                 .Setup(p => p.SlanjePalete(It.IsAny<string>()))
-                .Returns(() => new Paleta((brojac++).ToString(), "kelar", "123", StatusPalete.OTPREMLJENA));
+                .Returns(() => new Paleta((brojac++).ToString(),nazivKelar,idKelar,status));
             _podrumRepozitorijum
-                .Setup(p => p.VratiPodrum(trazeniBrojPaleta))
-                .Returns(new VinskiPodrum { Id = "123", Naziv = "kelar", Temperatura = 12, MaxPaleta = 100 });
+                .Setup(p => p.VratiPodrum(It.IsAny<int>()))
+                .Returns(new VinskiPodrum { Id = idKelar, Naziv = nazivKelar, Temperatura = temperatura, MaxPaleta = maxPaleta });
 
             // Act
-            var rezultat = _skladistenjeServis.IsporukaPalete(trazeniBrojPaleta);
+            var rezultat = _skladistenjeServis.IsporukaPalete(brPaleta);
             // Assert
-            Assert.That(rezultat.Count, Is.EqualTo(trazeniBrojPaleta));
+            Assert.That(rezultat.Count, Is.EqualTo(brPaleta));
 
             // Provera da je zabelezena informacija
             _loggerServis.Verify(
@@ -102,12 +124,12 @@ namespace Tests.Services.ServisZaSkladistenje
             // Provera da je metoda SlanjePalete pozvana tacan broj puta
             _pakovanjeServis.Verify(
                 x => x.SlanjePalete(It.IsAny<string>()),
-                Times.Exactly(trazeniBrojPaleta)
+                Times.Exactly(brPaleta)
             );
 
             // Provera da su sve palete jedinstvene
             var uniqueIds = rezultat.Select(p => p.SifraPalete).Distinct().Count();
-            Assert.That(uniqueIds, Is.EqualTo(trazeniBrojPaleta));
+            Assert.That(uniqueIds, Is.EqualTo(brPaleta));
             
         }
         #endregion
@@ -117,7 +139,11 @@ namespace Tests.Services.ServisZaSkladistenje
             _loggerServis.Reset();
             _podrumRepozitorijum.Reset();
             _pakovanjeServis.Reset();
-            _skladistenjeServis = null;
+            _skladistenjeServis = new VinskiPodrumSkladistenjeServis(
+                _loggerServis.Object,
+                _pakovanjeServis.Object,
+                _podrumRepozitorijum.Object
+            );
         }
     }
 }
