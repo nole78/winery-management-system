@@ -48,7 +48,7 @@ namespace Services.ServisZaSkladistenje
                     return [];
                 }
 
-                while (brojPaleta < MAKS_PALETA)
+                while (brojPaleta > 0)
                 {
                     Paleta paleta = pakovanjeServis.SlanjePalete(kelar.Id);
                     if (paleta.SifraPalete != string.Empty)
