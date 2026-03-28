@@ -56,10 +56,3 @@ Interfaces and service implementations are used to ensure flexibility and mainta
 
 ---
 
-## Future Improvements
-
-* Migration to a relational or scalable NoSQL database
-* Improved UI/UX
-* Additional features and performance optimizations
-
----
